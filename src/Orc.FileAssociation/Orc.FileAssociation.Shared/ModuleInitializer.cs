@@ -1,5 +1,5 @@
 ﻿using Catel.IoC;
-//using Orc.FileAssocation;
+using Orc.FileAssociation;
 
 /// <summary>
 /// Used by the ModuleInit. All code inside the Initialize method is ran as soon as the assembly is loaded.
@@ -13,8 +13,7 @@ public static class ModuleInitializer
     {
         var serviceLocator = ServiceLocator.Default;
 
-        //serviceLocator.RegisterType<IHelpWriterService, HelpWriterService>();
-        //serviceLocator.RegisterType<IOptionDefinitionService, OptionDefinitionService>();
-        //serviceLocator.RegisterType<ICommandLineParser, CommandLineParser>();
+        serviceLocator.RegisterType<IApplicationRegistrationService, ApplicationRegistrationService>();
+        serviceLocator.RegisterType<IFileAssociationService, FileAssociationService>();
     }
 }

@@ -6,15 +6,19 @@
     <SharedGUID>a6f7531d-8256-4c27-9049-50c27ab337e2</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Orc.FileAssociation.Shared</Import_RootNamespace>
+    <Import_RootNamespace>Orc.FileAssociation</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)..\..\SolutionAssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\RegistryExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\StringExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ApplicationInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ModuleInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Extensions\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Services\Interfaces\" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ApplicationRegistrationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Extensions\IApplicationRegistrationServiceExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\FileAssociationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IApplicationRegistrationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IFileAssociationService.cs" />
   </ItemGroup>
 </Project>
