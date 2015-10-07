@@ -7,12 +7,12 @@
 ![Version](https://img.shields.io/nuget/v/orc.fileassociation.svg)
 ![Pre-release version](https://img.shields.io/nuget/vpre/orc.fileassociation.svg)
 
-Makes it easy to associate files with your application. This library does not require elevation, it only applies
-the file association for the current user.
+Makes it easy to associate files with your application.
 
 # Quick introduction
 
-Using this library is easy. You need to register the app, the let the user associate files with it.
+Using this library is easy. You need to register the app, then let the user associate files with it. **This library does not require elevation, it only applies
+the file association for the current user.**
 
 ## Application registration
 
