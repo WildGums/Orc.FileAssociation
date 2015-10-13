@@ -17,7 +17,7 @@ namespace Orc.FileAssociation
 
         public void AssociateFilesWithApplication(string applicationName = null)
         {
-            Argument.IsNotNullOrWhitespace(() => applicationName);
+            applicationName = applicationName.GetApplicationName();
 
             Log.Info("Associating files with '{0}'", applicationName);
 
