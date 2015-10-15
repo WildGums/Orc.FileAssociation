@@ -111,7 +111,7 @@ namespace Orc.FileAssociation
 
             //[HKEY_CURRENT_USER\Software\Classes\MyAppHTML\shell\open\command]
             //@="\"C:\\the app path\\testassoc.exe\""
-            registryHive.SetRegistryValue(string.Format("{0}\\{1}\\shell\\open\\command", ClassesRegistryKeyName, applicationInfo.Name), "", string.Format("\"{0}\"", applicationInfo.Location));
+            registryHive.SetRegistryValue(string.Format("{0}\\{1}\\shell\\open\\command", ClassesRegistryKeyName, applicationInfo.Name), "", string.Format("\"{0}\" \"%1\"", applicationInfo.Location));
         }
 
         protected virtual void RemoveApplicationFromClassesRoot(ApplicationInfo applicationInfo)
