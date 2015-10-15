@@ -16,7 +16,7 @@ namespace Orc.FileAssociation
             if (string.IsNullOrWhiteSpace(applicationName))
             {
                 var entryAssembly = AssemblyHelper.GetEntryAssembly();
-                applicationName = entryAssembly.Title();
+                applicationName = entryAssembly.GetName().Name;
             }
 
             return applicationName;
