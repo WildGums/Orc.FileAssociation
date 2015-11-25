@@ -1,4 +1,6 @@
 ﻿using Catel.IoC;
+using Catel.Services;
+using Catel.Services.Models;
 using Orc.FileAssociation;
 
 /// <summary>
@@ -15,5 +17,8 @@ public static class ModuleInitializer
 
         serviceLocator.RegisterType<IApplicationRegistrationService, ApplicationRegistrationService>();
         serviceLocator.RegisterType<IFileAssociationService, FileAssociationService>();
+
+        var languageService = serviceLocator.ResolveType<ILanguageService>();
+        languageService.RegisterLanguageSource(new LanguageResourceSource("Orc.FileAssociation", "Orc.FileAssociation.Properties", "Resources"));
     }
 }
