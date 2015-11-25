@@ -36,22 +36,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FileAssociation.Tests.N
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{672BFA2E-9F93-496F-B188-40579FB5D301}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FileAssociation.Example.NET40", "Orc.FileAssociation.Example.NET40\Orc.FileAssociation.Example.NET40.csproj", "{46C30935-EFBE-4F8F-98BC-94EB475CEFCF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FileAssociation.Example.NET40", "Orc.FileAssociation.Example\Orc.FileAssociation.Example.NET40\Orc.FileAssociation.Example.NET40.csproj", "{46C30935-EFBE-4F8F-98BC-94EB475CEFCF}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Orc.FileAssociation.Example.Shared", "Orc.FileAssociation.Example.Shared\Orc.FileAssociation.Example.Shared.shproj", "{EECB4EC4-26D5-4261-BF6D-A707789DE751}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Orc.FileAssociation.Example.Shared", "Orc.FileAssociation.Example\Orc.FileAssociation.Example.Shared\Orc.FileAssociation.Example.Shared.shproj", "{EECB4EC4-26D5-4261-BF6D-A707789DE751}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FileAssociation.Example.NET45", "Orc.FileAssociation.Example.NET45\Orc.FileAssociation.Example.NET45.csproj", "{EF43B8F1-3EA8-4B29-9523-A856A34B6717}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FileAssociation.Example.NET45", "Orc.FileAssociation.Example\Orc.FileAssociation.Example.NET45\Orc.FileAssociation.Example.NET45.csproj", "{EF43B8F1-3EA8-4B29-9523-A856A34B6717}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Orc.FileAssociation\Orc.FileAssociation.Shared\Orc.FileAssociation.Shared.projitems*{4258fc75-dd23-4877-a56d-3a077ab57f2d}*SharedItemsImports = 4
 		Orc.FileAssociation.Tests\Orc.FileAssociation.Tests.Shared\Orc.FileAssociation.Tests.Shared.projitems*{d6415689-67de-4fee-aa72-6d7eedddceb6}*SharedItemsImports = 4
-		Orc.FileAssociation.Example.Shared\Orc.FileAssociation.Example.Shared.projitems*{46c30935-efbe-4f8f-98bc-94eb475cefcf}*SharedItemsImports = 4
-		Orc.FileAssociation.Example.Shared\Orc.FileAssociation.Example.Shared.projitems*{eecb4ec4-26d5-4261-bf6d-a707789de751}*SharedItemsImports = 13
+		Orc.FileAssociation.Example\Orc.FileAssociation.Example.Shared\Orc.FileAssociation.Example.Shared.projitems*{46c30935-efbe-4f8f-98bc-94eb475cefcf}*SharedItemsImports = 4
+		Orc.FileAssociation.Example\Orc.FileAssociation.Example.Shared\Orc.FileAssociation.Example.Shared.projitems*{eecb4ec4-26d5-4261-bf6d-a707789de751}*SharedItemsImports = 13
 		Orc.FileAssociation.Tests\Orc.FileAssociation.Tests.Shared\Orc.FileAssociation.Tests.Shared.projitems*{377aed18-9071-4b46-a320-d63c4d7f30c3}*SharedItemsImports = 13
 		Orc.FileAssociation\Orc.FileAssociation.Shared\Orc.FileAssociation.Shared.projitems*{a6f7531d-8256-4c27-9049-50c27ab337e2}*SharedItemsImports = 13
 		Orc.FileAssociation.Tests\Orc.FileAssociation.Tests.Shared\Orc.FileAssociation.Tests.Shared.projitems*{167cbb2b-cc02-4cf2-85c2-ad9921b8dbfe}*SharedItemsImports = 4
-		Orc.FileAssociation.Example.Shared\Orc.FileAssociation.Example.Shared.projitems*{ef43b8f1-3ea8-4b29-9523-a856a34b6717}*SharedItemsImports = 4
+		Orc.FileAssociation.Example\Orc.FileAssociation.Example.Shared\Orc.FileAssociation.Example.Shared.projitems*{ef43b8f1-3ea8-4b29-9523-a856a34b6717}*SharedItemsImports = 4
 		Orc.FileAssociation\Orc.FileAssociation.Shared\Orc.FileAssociation.Shared.projitems*{3af90048-8469-4386-aa6b-c4765e13863a}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
