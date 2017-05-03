@@ -35,6 +35,8 @@ namespace Orc.FileAssociation.ViewModels
             RegisterApplication = new Command(OnRegisterApplicationExecute, OnRegisterApplicationCanExecute);
             UnregisterApplication = new Command(OnUnregisterApplicationExecute, OnUnregisterApplicationCanExecute);
             AssociateFiles = new Command(OnAssociateFilesExecute, OnAssociateFilesCanExecute);
+
+            Title = "Orc.FileAssociation example";
         }
 
         #region Properties

@@ -12,7 +12,7 @@ namespace Orc.FileAssociation.Example.NET40
     using Catel.IoC;
     using Catel.Logging;
     using Catel.Services;
-    using Catel.Windows;
+    using Orchestra;
 
     /// <summary>
     /// Interaction logic for App.xaml
@@ -38,7 +38,7 @@ namespace Orc.FileAssociation.Example.NET40
 
             base.OnStartup(e);
 
-            StyleHelper.CreateStyleForwardersForDefaultStyles();
+            this.ApplyTheme();
         }
     }
 }
