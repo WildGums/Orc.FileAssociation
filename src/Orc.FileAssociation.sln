@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26020.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FileAssociation.NET40", "Orc.FileAssociation\Orc.FileAssociation.NET40\Orc.FileAssociation.NET40.csproj", "{4258FC75-DD23-4877-A56D-3A077AB57F2D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FileAssociation.NET47", "Orc.FileAssociation\Orc.FileAssociation.NET47\Orc.FileAssociation.NET47.csproj", "{4258FC75-DD23-4877-A56D-3A077AB57F2D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A8A1A4EE-E04A-43AB-90C9-41E7B82EE1E5}"
 EndProject
@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{1FE0D431-A
 		SolutionAssemblyInfo.cs = SolutionAssemblyInfo.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FileAssociation.Tests.NET40", "Orc.FileAssociation.Tests\Orc.FileAssociation.Tests.NET40\Orc.FileAssociation.Tests.NET40.csproj", "{D6415689-67DE-4FEE-AA72-6D7EEDDDCEB6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FileAssociation.Tests.NET47", "Orc.FileAssociation.Tests\Orc.FileAssociation.Tests.NET47\Orc.FileAssociation.Tests.NET47.csproj", "{D6415689-67DE-4FEE-AA72-6D7EEDDDCEB6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{0787DFC6-AB24-4D00-A8A4-FF203DC7D080}"
 EndProject
@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FileAssociation.Tests.N
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{672BFA2E-9F93-496F-B188-40579FB5D301}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FileAssociation.Example.NET40", "Orc.FileAssociation.Example\Orc.FileAssociation.Example.NET40\Orc.FileAssociation.Example.NET40.csproj", "{46C30935-EFBE-4F8F-98BC-94EB475CEFCF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FileAssociation.Example.NET47", "Orc.FileAssociation.Example\Orc.FileAssociation.Example.NET47\Orc.FileAssociation.Example.NET47.csproj", "{46C30935-EFBE-4F8F-98BC-94EB475CEFCF}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Orc.FileAssociation.Example.Shared", "Orc.FileAssociation.Example\Orc.FileAssociation.Example.Shared\Orc.FileAssociation.Example.Shared.shproj", "{EECB4EC4-26D5-4261-BF6D-A707789DE751}"
 EndProject
