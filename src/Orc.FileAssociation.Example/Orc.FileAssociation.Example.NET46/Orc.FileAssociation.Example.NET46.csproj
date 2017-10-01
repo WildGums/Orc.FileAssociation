@@ -52,13 +52,13 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Orc.Controls, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\lib\Orc.Controls.2.0.0-unstable0002\lib\net46\Orc.Controls.dll</HintPath>
+      <HintPath>..\..\..\lib\Orc.Controls.2.0.0\lib\net46\Orc.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Orc.FileSystem, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\lib\Orc.FileSystem.2.0.0\lib\net46\Orc.FileSystem.dll</HintPath>
     </Reference>
     <Reference Include="Orchestra.Core, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\lib\Orchestra.Core.3.0.0-unstable0011\lib\net46\Orchestra.Core.dll</HintPath>
+      <HintPath>..\..\..\lib\Orchestra.Core.3.0.0\lib\net46\Orchestra.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
