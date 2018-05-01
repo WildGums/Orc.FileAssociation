@@ -7,13 +7,14 @@
 
 namespace Orc.FileAssociation.Tests
 {
+    using System.Runtime.CompilerServices;
     using ApiApprover;
     using NUnit.Framework;
 
     [TestFixture]
     public class PublicApiFacts
     {
-        [Test]
+        [Test, MethodImpl(MethodImplOptions.NoInlining)]
         public void Orc_FileAssociation_HasNoBreakingChanges()
         {
             var assembly = typeof(FileAssociationService).Assembly;
