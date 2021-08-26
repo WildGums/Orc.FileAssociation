@@ -24,6 +24,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -46,6 +48,9 @@
                 <CheckBox Grid.ColumnSpan="2" IsEnabled="False" IsChecked="{Binding IsApplicationRegistered, Mode=OneWay}" Content="Is registered" />
                 <Button Grid.ColumnSpan="2" Content="Register application" Command="{Binding RegisterApplication}" />
                 <Button Grid.ColumnSpan="2" Content="Unregister application" Command="{Binding UnregisterApplication}" />
+                <Button Grid.ColumnSpan="2" Content="Associate extensions" Command="{Binding AssociateFiles}" />
+                <Button Grid.ColumnSpan="2" Content="Undo extensions associations" Command="{Binding UndoAssociationFiles}" />
+
             </orccontrols:StackGrid>
         </GroupBox>
 

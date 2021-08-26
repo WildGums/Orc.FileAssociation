@@ -9,6 +9,8 @@ namespace Orc.FileAssociation
 {
     public interface IFileAssociationService
     {
-        void AssociateFilesWithApplication(string applicationName = null);
+        void AssociateFilesWithApplication(ApplicationInfo applicationInfo);
+
+        void UndoAssociationFilesWithApplication(ApplicationInfo applicationInfo);
     }
 }

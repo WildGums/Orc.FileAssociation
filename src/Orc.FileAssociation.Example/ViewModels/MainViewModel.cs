@@ -35,7 +35,7 @@ namespace Orc.FileAssociation.ViewModels
             RegisterApplication = new Command(OnRegisterApplicationExecute, OnRegisterApplicationCanExecute);
             UnregisterApplication = new Command(OnUnregisterApplicationExecute, OnUnregisterApplicationCanExecute);
             AssociateFiles = new Command(OnAssociateFilesExecute, OnAssociateFilesCanExecute);
-
+            UndoAssociationFiles = new Command(OnUndoAssociateFilesExecute, OnAssociateFilesCanExecute);
             Title = "Orc.FileAssociation example";
         }
 
@@ -95,7 +95,14 @@ namespace Orc.FileAssociation.ViewModels
 
         private void OnAssociateFilesExecute()
         {
-            _fileAssociationService.AssociateFilesWithApplication(ApplicationInfo.Name);
+            _fileAssociationService.AssociateFilesWithApplication(ApplicationInfo);
+        }
+
+        public Command UndoAssociationFiles { get; private set; }
+
+        private void OnUndoAssociateFilesExecute()
+        {
+            _fileAssociationService.UndoAssociationFilesWithApplication(ApplicationInfo);
         }
         #endregion
 
