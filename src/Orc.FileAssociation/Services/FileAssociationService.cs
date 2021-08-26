@@ -40,16 +40,6 @@ namespace Orc.FileAssociation
                 subKey.SetValue("", appPath + " \"%1\"");
             }
 
-
-            //var applicationAssociationRegistrationUi = (IApplicationAssociationRegistrationUI)new ApplicationAssociationRegistrationUI();
-            //var hr = applicationAssociationRegistrationUi.LaunchAdvancedAssociationUI(applicationName);
-            //var exception = Marshal.GetExceptionForHR(hr);
-            //if (exception is not null)
-            //{
-            //    Log.Error(exception, "Failed to associate the files with application '{0}'", applicationName);
-            //    throw exception;
-            //}
-
             Log.Info("Associated files with '{0}'", applicationName);
         }
 
@@ -68,22 +58,5 @@ namespace Orc.FileAssociation
             }
 
         }
-
-        [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
-
-        //[Guid("1f76a169-f994-40ac-8fc8-0959e8874710")]
-        //[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        //public interface IApplicationAssociationRegistrationUI
-        //{
-        //    [PreserveSig]
-        //    int LaunchAdvancedAssociationUI([MarshalAs(UnmanagedType.LPWStr)] string pszAppRegName);
-        //}
-
-        //[ComImport]
-        //[Guid("1968106d-f3b5-44cf-890e-116fcb9ecef1")]
-        //public class ApplicationAssociationRegistrationUI
-        //{
-        //}
     }
 }
