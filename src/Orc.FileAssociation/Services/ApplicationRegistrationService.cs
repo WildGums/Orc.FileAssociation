@@ -164,10 +164,6 @@ namespace Orc.FileAssociation
 
                 Log.Debug("Adding file association capability for extension '{0}'", finalExtension);
 
-                //var key = Registry.CurrentUser.CreateSubKey("Software\\Classes\\" + extension);
-                //var subKey = key.CreateSubKey("shell\\open\\command");
-                //subKey.SetValue("", applicationInfo.Location + " \"%1\"");
-
                 registryHive.SetRegistryValue(string.Format("{0}\\Capabilities\\FileAssociations", softwareKey), finalExtension, applicationInfo.Name);
             }
         }
@@ -183,18 +179,6 @@ namespace Orc.FileAssociation
             //[HKEY_CURRENT_USER\Software\FictionalSoftware\MyApp]
             var softwareKey = GetCurrentUserSoftwareKeyName(applicationInfo);
             registryHive.RemoveRegistryKey(softwareKey);
-
-            foreach (var extension in applicationInfo.SupportedExtensions)
-            {
-                var finalExtension = extension;
-                if (!finalExtension.StartsWith("."))
-                {
-                    finalExtension = "." + finalExtension;
-                }
-
-                // Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree($"SOFTWARE\\Classes\\{finalExtension}");
-                Log.Debug($"Removing extension association {finalExtension} capabilities from current user");
-            }
         }
 
         protected virtual bool IsAppAddedToRegisteredApps(ApplicationInfo applicationInfo)
