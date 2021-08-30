@@ -10,7 +10,7 @@
     {
         [Test]
         [TestCaseSource(nameof(Cases))]
-        public async Task AssociateFilesWithApplicationAsyncTestAsync(ApplicationInfo applicationInfo, List<String> extensions, string path)
+        public async Task AssociateFilesWithApplicationAsyncTestAsync(ApplicationInfo applicationInfo, List<string> extensions, string path)
         {
             var fileAssociationServiceMock = new FileAssociationServiceMock();
             await fileAssociationServiceMock.AssociateFilesWithApplicationAsync(applicationInfo);
@@ -19,7 +19,7 @@
             Assert.AreEqual(path, fileAssociationServiceMock.ApplicationPath);
         }
 
-        private static ApplicationInfo CreateApplicationInfo(string location, List<String> extensions)
+        private static ApplicationInfo CreateApplicationInfo(string location, List<string> extensions)
         {
             var applicationInfo = new ApplicationInfo(
                  "WildGums",
@@ -33,15 +33,15 @@
         private static readonly object[] Cases =
         {
             new object[] {CreateApplicationInfo(@"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.exe", new List<string> { "txt", "abc", "xyz" }),
-                new List<String>{ ".txt", ".abc", ".xyz" },
+                new List<string>{ ".txt", ".abc", ".xyz" },
                 @"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.exe"
             },
             new object[] {CreateApplicationInfo(@"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.exe", new List<string> { ".txt.txt", ".xyz.abc" }),
-                new List<String>{ ".txt.txt", ".xyz.abc" },
+                new List<string>{ ".txt.txt", ".xyz.abc" },
                 @"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.exe"
             },
               new object[] {CreateApplicationInfo(@"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.dll", new List<string> { "txt", "abc", "xyz" }),
-                new List<String>{ ".txt", ".abc", ".xyz" },
+                new List<string>{ ".txt", ".abc", ".xyz" },
                 @"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.exe"
         }
         };
@@ -51,7 +51,7 @@
     {
         public string ApplicationPath { get; set; }
 
-        public List<String> Extensions { get; set; } = new();
+        public List<string> Extensions { get; set; } = new();
 
         protected override void CreateAssociationRegistryKey(string appPath, string extension)
         {

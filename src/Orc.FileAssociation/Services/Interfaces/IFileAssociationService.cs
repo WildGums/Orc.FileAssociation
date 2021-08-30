@@ -14,7 +14,7 @@ namespace Orc.FileAssociation
         [ObsoleteEx(Message = "Not supported in Windows 10.",
                     TreatAsErrorFromVersion = "4.2.0",
                     RemoveInVersion = "4.3.0",
-                    ReplacementTypeOrMember = "AssociateFilesWithApplication(ApplicationInfo applicationInfo)")]
+                    ReplacementTypeOrMember = "AssociateFilesWithApplicationAsync(ApplicationInfo applicationInfo)")]
         void AssociateFilesWithApplication(string applicationName = null);
 
         Task AssociateFilesWithApplicationAsync(ApplicationInfo applicationInfo);
