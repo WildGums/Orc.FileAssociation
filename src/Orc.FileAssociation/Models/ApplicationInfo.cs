@@ -14,6 +14,7 @@ namespace Orc.FileAssociation
 
     public class ApplicationInfo
     {
+        private string _location;
         #region Constructors
         public ApplicationInfo(string company, string name, string title, string location)
         {
@@ -42,7 +43,18 @@ namespace Orc.FileAssociation
 
         public string Title { get; private set; }
 
-        public string Location { get; private set; }
+        public string Location
+        {
+            get
+            {
+                if (_location.EndsWith("dll"))
+                {
+                    return _location.Replace("dll", "exe");
+                }
+                return _location;
+            }
+            private set => _location = value;
+        }
 
         public List<string> SupportedExtensions { get; private set; }
         #endregion

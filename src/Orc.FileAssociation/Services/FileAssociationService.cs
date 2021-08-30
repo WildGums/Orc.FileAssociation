@@ -69,14 +69,14 @@ namespace Orc.FileAssociation
                 {
                     finalExtension = "." + finalExtension;
                 }
-                var appPath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+                var appPath = applicationInfo.Location;
                 CreateAssociationRegistryKey(appPath, finalExtension);
             }
 
             Log.Info("Associated files with '{0}'", applicationName);
         }
 
-        private void CreateAssociationRegistryKey(string appPath, string extension)
+        protected virtual void CreateAssociationRegistryKey(string appPath, string extension)
         {
             var key = Registry.CurrentUser.CreateSubKey($"Software\\Classes\\{extension}");
             var subKey = key.CreateSubKey("shell\\open\\command");

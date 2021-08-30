@@ -36,7 +36,12 @@ namespace Orc.FileAssociation
     public class FileAssociationService : Orc.FileAssociation.IFileAssociationService
     {
         public FileAssociationService() { }
+        [System.Obsolete("Not supported in Windows 10. Use `AssociateFilesWithApplication(ApplicationInfo a" +
+            "pplicationInfo)` instead. Will be removed in version 4.3.0.", true)]
         public void AssociateFilesWithApplication(string applicationName = null) { }
+        public System.Threading.Tasks.Task AssociateFilesWithApplicationAsync(Orc.FileAssociation.ApplicationInfo applicationInfo) { }
+        protected virtual void CreateAssociationRegistryKey(string appPath, string extension) { }
+        public System.Threading.Tasks.Task UndoAssociationFilesWithApplicationAsync(Orc.FileAssociation.ApplicationInfo applicationInfo) { }
         [System.Runtime.InteropServices.Guid("1968106d-f3b5-44cf-890e-116fcb9ecef1")]
         public class ApplicationAssociationRegistrationUI
         {
@@ -61,7 +66,11 @@ namespace Orc.FileAssociation
     }
     public interface IFileAssociationService
     {
+        [System.Obsolete("Not supported in Windows 10. Use `AssociateFilesWithApplication(ApplicationInfo a" +
+            "pplicationInfo)` instead. Will be removed in version 4.3.0.", true)]
         void AssociateFilesWithApplication(string applicationName = null);
+        System.Threading.Tasks.Task AssociateFilesWithApplicationAsync(Orc.FileAssociation.ApplicationInfo applicationInfo);
+        System.Threading.Tasks.Task UndoAssociationFilesWithApplicationAsync(Orc.FileAssociation.ApplicationInfo applicationInfo);
     }
     public static class RegistryExtensions
     {
