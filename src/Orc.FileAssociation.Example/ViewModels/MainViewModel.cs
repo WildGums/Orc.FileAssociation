@@ -34,8 +34,8 @@ namespace Orc.FileAssociation.ViewModels
 
             RegisterApplication = new Command(OnRegisterApplicationExecute, OnRegisterApplicationCanExecute);
             UnregisterApplication = new Command(OnUnregisterApplicationExecute, OnUnregisterApplicationCanExecute);
-            AssociateFiles = new Command(OnAssociateFilesExecute, OnAssociateFilesCanExecute);
-            UndoAssociationFiles = new Command(OnUndoAssociateFilesExecute, OnAssociateFilesCanExecute);
+            AssociateFiles = new TaskCommand(OnAssociateFilesExecuteAsync, OnAssociateFilesCanExecute);
+            UndoAssociationFiles = new TaskCommand(OnUndoAssociateFilesExecuteAsync, OnAssociateFilesCanExecute);
             Title = "Orc.FileAssociation example";
         }
 
@@ -86,23 +86,23 @@ namespace Orc.FileAssociation.ViewModels
             UpdateState();
         }
 
-        public Command AssociateFiles { get; private set; }
+        public TaskCommand AssociateFiles { get; private set; }
 
         private bool OnAssociateFilesCanExecute()
         {
             return IsApplicationRegistered;
         }
 
-        private void OnAssociateFilesExecute()
+        private async Task OnAssociateFilesExecuteAsync()
         {
-            _fileAssociationService.AssociateFilesWithApplication(ApplicationInfo);
+            await _fileAssociationService.AssociateFilesWithApplicationAsync(ApplicationInfo);
         }
 
-        public Command UndoAssociationFiles { get; private set; }
+        public TaskCommand UndoAssociationFiles { get; private set; }
 
-        private void OnUndoAssociateFilesExecute()
+        private async Task OnUndoAssociateFilesExecuteAsync()
         {
-            _fileAssociationService.UndoAssociationFilesWithApplication(ApplicationInfo);
+            await _fileAssociationService.UndoAssociationFilesWithApplicationAsync(ApplicationInfo);
         }
         #endregion
 

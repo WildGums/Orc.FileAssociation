@@ -9,6 +9,7 @@ namespace Orc.FileAssociation
 {
     using System;
     using System.Runtime.InteropServices;
+    using System.Threading.Tasks;
     using Catel;
     using Catel.Logging;
     using Microsoft.Win32;
@@ -17,13 +18,47 @@ namespace Orc.FileAssociation
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        public void AssociateFilesWithApplication(ApplicationInfo applicationInfo)
+        [ObsoleteEx(Message = "Not supported in Windows 10.",
+                  TreatAsErrorFromVersion = "4.2.0",
+                  RemoveInVersion = "4.3.0",
+                  ReplacementTypeOrMember = "AssociateFilesWithApplication(ApplicationInfo applicationInfo)")]
+        public void AssociateFilesWithApplication(string applicationName = null)
         {
-            string applicationName = null;
-            if (applicationInfo.Name.GetApplicationName() is not null)
+            applicationName = applicationName.GetApplicationName();
+
+            Log.Info("Associating files with '{0}'", applicationName);
+
+            var applicationAssociationRegistrationUi = (IApplicationAssociationRegistrationUI)new ApplicationAssociationRegistrationUI();
+            var hr = applicationAssociationRegistrationUi.LaunchAdvancedAssociationUI(applicationName);
+            var exception = Marshal.GetExceptionForHR(hr);
+            if (exception is not null)
             {
-               applicationName = applicationInfo.Name.GetApplicationName();
+                Log.Error(exception, "Failed to associate the files with application '{0}'", applicationName);
+                throw exception;
             }
+
+            Log.Info("Associated files with '{0}'", applicationName);
+        }
+
+        [Guid("1f76a169-f994-40ac-8fc8-0959e8874710")]
+        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        public interface IApplicationAssociationRegistrationUI
+        {
+            [PreserveSig]
+            int LaunchAdvancedAssociationUI([MarshalAs(UnmanagedType.LPWStr)] string pszAppRegName);
+        }
+
+        [ComImport]
+        [Guid("1968106d-f3b5-44cf-890e-116fcb9ecef1")]
+        public class ApplicationAssociationRegistrationUI
+        {
+        }
+
+        public async Task AssociateFilesWithApplicationAsync(ApplicationInfo applicationInfo)
+        {
+            Argument.IsNotNull(() =>  applicationInfo);
+
+            string applicationName = applicationInfo.Name.GetApplicationName();
 
             Log.Info("Associating files with '{0}'", applicationName);
 
@@ -35,16 +70,23 @@ namespace Orc.FileAssociation
                     finalExtension = "." + finalExtension;
                 }
                 var appPath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
-                var key = Registry.CurrentUser.CreateSubKey("Software\\Classes\\" + finalExtension);
-                var subKey = key.CreateSubKey("shell\\open\\command");
-                subKey.SetValue("", appPath + " \"%1\"");
+                CreateAssociationRegistryKey(appPath, finalExtension);
             }
 
             Log.Info("Associated files with '{0}'", applicationName);
         }
 
-        public void UndoAssociationFilesWithApplication(ApplicationInfo applicationInfo)
+        private void CreateAssociationRegistryKey(string appPath, string extension)
         {
+            var key = Registry.CurrentUser.CreateSubKey($"Software\\Classes\\{extension}");
+            var subKey = key.CreateSubKey("shell\\open\\command");
+            subKey.SetValue(string.Empty, appPath + " \"%1\"");
+        }
+
+        public async Task UndoAssociationFilesWithApplicationAsync(ApplicationInfo applicationInfo)
+        {
+            Argument.IsNotNull(() => applicationInfo);
+
             foreach (var extension in applicationInfo.SupportedExtensions)
             {
                 var finalExtension = extension;
@@ -52,9 +94,9 @@ namespace Orc.FileAssociation
                 {
                     finalExtension = "." + finalExtension;
                 }
-
-                Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree($"SOFTWARE\\Classes\\{finalExtension}");
                 Log.Debug($"Removing extension association {finalExtension} capabilities from current user");
+                Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree($"SOFTWARE\\Classes\\{finalExtension}");
+                Log.Debug($"Removed extension association for {finalExtension} from current user");
             }
 
         }
