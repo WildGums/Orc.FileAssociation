@@ -9,6 +9,7 @@ namespace Orc.FileAssociation
 {
     using System.Collections.Generic;
     using System.Reflection;
+    using System;
     using Catel;
     using Catel.Reflection;
 
@@ -43,13 +44,16 @@ namespace Orc.FileAssociation
 
         public string Title { get; private set; }
 
+        /// <summary>
+        /// Need to get the execution location (i.e. EXE) rather than the current (i.e. DLL).
+        /// </summary>
         public string Location
         {
             get
             {
                 if (_location.EndsWith("dll"))
                 {
-                    return _location.Replace("dll", "exe");
+                    return _location.Replace("dll", "exe", StringComparison.OrdinalIgnoreCase);
                 }
                 return _location;
             }

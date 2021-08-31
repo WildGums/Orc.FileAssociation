@@ -20,7 +20,7 @@ namespace Orc.FileAssociation
 
         [ObsoleteEx(Message = "Not supported in Windows 10.",
                   TreatAsErrorFromVersion = "4.2.0",
-                  RemoveInVersion = "4.3.0",
+                  RemoveInVersion = "5.0.0",
                   ReplacementTypeOrMember = "AssociateFilesWithApplicationAsync(ApplicationInfo applicationInfo)")]
         public void AssociateFilesWithApplication(string applicationName = null)
         {
@@ -58,10 +58,13 @@ namespace Orc.FileAssociation
         {
             Argument.IsNotNull(() =>  applicationInfo);
 
-            string applicationName = applicationInfo.Name.GetApplicationName();
+            var applicationName = applicationInfo.Name.GetApplicationName();
+            var appPath = applicationInfo.Location;
+            var subKey = "shell\\open\\command";
+            var subKeyValue = $"{appPath} \"%1\"";
+            var name = string.Empty;
 
             Log.Info("Associating files with '{0}'", applicationName);
-
             foreach (var extension in applicationInfo.SupportedExtensions)
             {
                 var finalExtension = extension;
@@ -69,18 +72,17 @@ namespace Orc.FileAssociation
                 {
                     finalExtension = "." + finalExtension;
                 }
-                var appPath = applicationInfo.Location;
-                CreateAssociationRegistryKey(appPath, finalExtension);
+                var classesSubKey = $"Software\\Classes\\{finalExtension}";
+                CreateAssociationRegistryKey(classesSubKey, subKey, subKeyValue, name);
             }
-
             Log.Info("Associated files with '{0}'", applicationName);
         }
 
-        protected virtual void CreateAssociationRegistryKey(string appPath, string extension)
+        protected virtual void CreateAssociationRegistryKey(string classesSubKey, string keySubKey, string subKeyValue, string name)
         {
-            var key = Registry.CurrentUser.CreateSubKey($"Software\\Classes\\{extension}");
-            var subKey = key.CreateSubKey("shell\\open\\command");
-            subKey.SetValue(string.Empty, appPath + " \"%1\"");
+            var key = Registry.CurrentUser.CreateSubKey(classesSubKey);
+            var subKey = key.CreateSubKey(keySubKey);
+            subKey.SetValue(name, subKeyValue);
         }
 
         public async Task UndoAssociationFilesWithApplicationAsync(ApplicationInfo applicationInfo)

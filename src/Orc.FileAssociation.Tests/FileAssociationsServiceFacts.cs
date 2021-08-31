@@ -10,13 +10,15 @@
     {
         [Test]
         [TestCaseSource(nameof(Cases))]
-        public async Task AssociateFilesWithApplicationAsyncTestAsync(ApplicationInfo applicationInfo, List<string> extensions, string path)
+        public async Task AssociateFilesWithApplicationAsyncTestAsync(ApplicationInfo applicationInfo, List<string> classesSubKey, string subKey, string subKeyValue, string name)
         {
             var fileAssociationServiceMock = new FileAssociationServiceMock();
             await fileAssociationServiceMock.AssociateFilesWithApplicationAsync(applicationInfo);
 
-            CollectionAssert.AreEqual(extensions, fileAssociationServiceMock.Extensions);
-            Assert.AreEqual(path, fileAssociationServiceMock.ApplicationPath);
+            CollectionAssert.AreEqual(classesSubKey, fileAssociationServiceMock.ClassesSubKey);
+            Assert.AreEqual(subKey, fileAssociationServiceMock.SubKey);
+            Assert.AreEqual(subKeyValue, fileAssociationServiceMock.SubKeyValue);
+            Assert.AreEqual(name, fileAssociationServiceMock.Name);
         }
 
         private static ApplicationInfo CreateApplicationInfo(string location, List<string> extensions)
@@ -33,30 +35,42 @@
         private static readonly object[] Cases =
         {
             new object[] {CreateApplicationInfo(@"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.exe", new List<string> { "txt", "abc", "xyz" }),
-                new List<string>{ ".txt", ".abc", ".xyz" },
-                @"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.exe"
+               new List<string> { @"Software\Classes\.txt", @"Software\Classes\.abc", @"Software\Classes\.xyz" },
+               @"shell\open\command",
+               $"C:\\Source\\Orc.FileAssociation\\output\\Debug\\Orc.FileAssociation.Example\\netcoreapp3.1\\Orc.FileAssociation.Example.exe \"%1\"",
+               string.Empty
             },
             new object[] {CreateApplicationInfo(@"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.exe", new List<string> { ".txt.txt", ".xyz.abc" }),
-                new List<string>{ ".txt.txt", ".xyz.abc" },
-                @"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.exe"
+               new List<string> { @"Software\Classes\.txt.txt", @"Software\Classes\.xyz.abc" },
+               @"shell\open\command",
+               $"C:\\Source\\Orc.FileAssociation\\output\\Debug\\Orc.FileAssociation.Example\\netcoreapp3.1\\Orc.FileAssociation.Example.exe \"%1\"",
+               string.Empty
             },
-              new object[] {CreateApplicationInfo(@"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.dll", new List<string> { "txt", "abc", "xyz" }),
-                new List<string>{ ".txt", ".abc", ".xyz" },
-                @"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.exe"
-        }
+            new object[] {CreateApplicationInfo(@"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.dll", new List<string> { "txt", "abc", "xyz" }),
+               new List<string> { @"Software\Classes\.txt", @"Software\Classes\.abc", @"Software\Classes\.xyz" },
+               @"shell\open\command",
+               $"C:\\Source\\Orc.FileAssociation\\output\\Debug\\Orc.FileAssociation.Example\\netcoreapp3.1\\Orc.FileAssociation.Example.exe \"%1\"",
+               string.Empty
+            }
         };
     }
 
     internal class FileAssociationServiceMock : FileAssociationService
     {
-        public string ApplicationPath { get; set; }
+        public List<string> ClassesSubKey { get; set; } = new();
 
-        public List<string> Extensions { get; set; } = new();
+        public string SubKey { get; set; }
 
-        protected override void CreateAssociationRegistryKey(string appPath, string extension)
+        public string SubKeyValue { get; set; }
+
+        public string Name { get; set; }
+
+        protected override void CreateAssociationRegistryKey(string classesSubKey, string subKey, string subKeyValue, string name)
         {
-            Extensions.Add(extension);
-            ApplicationPath = appPath;
+            ClassesSubKey.Add(classesSubKey);
+            SubKey = subKey;
+            SubKeyValue = subKeyValue;
+            Name = name;
         }
     }
 }
