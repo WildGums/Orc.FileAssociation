@@ -37,19 +37,19 @@
             new object[] {CreateApplicationInfo(@"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.exe", new List<string> { "txt", "abc", "xyz" }),
                new List<string> { @"Software\Classes\.txt", @"Software\Classes\.abc", @"Software\Classes\.xyz" },
                @"shell\open\command",
-               $"C:\\Source\\Orc.FileAssociation\\output\\Debug\\Orc.FileAssociation.Example\\netcoreapp3.1\\Orc.FileAssociation.Example.exe \"%1\"",
+               "C:\\Source\\Orc.FileAssociation\\output\\Debug\\Orc.FileAssociation.Example\\netcoreapp3.1\\Orc.FileAssociation.Example.exe \"%1\"",
                string.Empty
             },
             new object[] {CreateApplicationInfo(@"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.exe", new List<string> { ".txt.txt", ".xyz.abc" }),
                new List<string> { @"Software\Classes\.txt.txt", @"Software\Classes\.xyz.abc" },
                @"shell\open\command",
-               $"C:\\Source\\Orc.FileAssociation\\output\\Debug\\Orc.FileAssociation.Example\\netcoreapp3.1\\Orc.FileAssociation.Example.exe \"%1\"",
+               "C:\\Source\\Orc.FileAssociation\\output\\Debug\\Orc.FileAssociation.Example\\netcoreapp3.1\\Orc.FileAssociation.Example.exe \"%1\"",
                string.Empty
             },
             new object[] {CreateApplicationInfo(@"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.dll", new List<string> { "txt", "abc", "xyz" }),
                new List<string> { @"Software\Classes\.txt", @"Software\Classes\.abc", @"Software\Classes\.xyz" },
                @"shell\open\command",
-               $"C:\\Source\\Orc.FileAssociation\\output\\Debug\\Orc.FileAssociation.Example\\netcoreapp3.1\\Orc.FileAssociation.Example.exe \"%1\"",
+               "C:\\Source\\Orc.FileAssociation\\output\\Debug\\Orc.FileAssociation.Example\\netcoreapp3.1\\Orc.FileAssociation.Example.exe \"%1\"",
                string.Empty
             }
         };
