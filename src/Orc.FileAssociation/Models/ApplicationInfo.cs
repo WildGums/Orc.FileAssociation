@@ -44,14 +44,13 @@ namespace Orc.FileAssociation
 
         public string Title { get; private set; }
 
-
-        // Note: we need to make sure this is an executable, otherwise the file association won't work
         public string Location
         {
             get
             {
                 if (_location.EndsWith("dll"))
                 {
+                    // Note: we need to make sure this is an executable, otherwise the file association won't work
                     return _location.Replace("dll", "exe", StringComparison.OrdinalIgnoreCase);
                 }
                 return _location;
