@@ -34,7 +34,7 @@ namespace Orc.FileAssociation
             using (var registry = RegistryKey.OpenBaseKey(registryHive, RegistryView.Default))
             {
                 var registryKey = registry.OpenSubKey(key);
-                if (registryKey == null)
+                if (registryKey is null)
                 {
                     return false;
                 }
@@ -48,7 +48,7 @@ namespace Orc.FileAssociation
             using (var registry = RegistryKey.OpenBaseKey(registryHive, RegistryView.Default))
             {
                 var registryKey = registry.OpenSubKey(key);
-                if (registryKey == null)
+                if (registryKey is null)
                 {
                     return false;
                 }
