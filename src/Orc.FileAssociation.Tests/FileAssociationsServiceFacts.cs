@@ -10,15 +10,15 @@
     {
         [Test]
         [TestCaseSource(nameof(Cases))]
-        public async Task AssociateFilesWithApplicationAsyncTestAsync(ApplicationInfo applicationInfo, List<string> classesSubKey, string subKey, string subKeyValue, string name)
+        public async Task AssociateFilesWithApplicationAsyncTestAsync(ApplicationInfo applicationInfo, List<string> expectedClassesSubKey, string expectedSubKey, string expectedSubKeyValue, string expectedName)
         {
             var fileAssociationServiceMock = new FileAssociationServiceMock();
             await fileAssociationServiceMock.AssociateFilesWithApplicationAsync(applicationInfo);
 
-            CollectionAssert.AreEqual(classesSubKey, fileAssociationServiceMock.ClassesSubKey);
-            Assert.AreEqual(subKey, fileAssociationServiceMock.SubKey);
-            Assert.AreEqual(subKeyValue, fileAssociationServiceMock.SubKeyValue);
-            Assert.AreEqual(name, fileAssociationServiceMock.Name);
+            CollectionAssert.AreEqual(expectedClassesSubKey, fileAssociationServiceMock.ClassesSubKey);
+            Assert.AreEqual(expectedSubKey, fileAssociationServiceMock.SubKey);
+            Assert.AreEqual(expectedSubKeyValue, fileAssociationServiceMock.SubKeyValue);
+            Assert.AreEqual(expectedName, fileAssociationServiceMock.Name);
         }
 
         private static ApplicationInfo CreateApplicationInfo(string location, List<string> extensions)
