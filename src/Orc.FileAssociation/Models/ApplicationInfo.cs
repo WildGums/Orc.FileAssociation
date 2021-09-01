@@ -44,9 +44,8 @@ namespace Orc.FileAssociation
 
         public string Title { get; private set; }
 
-        /// <summary>
-        /// Need to get the execution location (i.e. EXE) rather than the current (i.e. DLL).
-        /// </summary>
+
+        // Note: we need to make sure this is an executable, otherwise the file association won't work
         public string Location
         {
             get
