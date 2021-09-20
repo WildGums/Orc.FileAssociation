@@ -1,10 +1,7 @@
-#pragma warning disable 1998
-
 #l "docker-variables.cake"
 #l "lib-octopusdeploy.cake"
 
-#addin "nuget:?package=Cake.FileHelpers&version=3.0.0"
-#addin "nuget:?package=Cake.Docker&version=0.9.9"
+#addin "nuget:?package=Cake.Docker&version=1.0.0"
 
 //-------------------------------------------------------------
 
@@ -50,7 +47,7 @@ public class DockerImagesProcessor : ProcessorBase
         var dockerRegistryUrl = GetDockerRegistryUrl(projectName);
 
         var tag = string.Format("{0}/{1}:{2}", dockerRegistryUrl, GetDockerImageName(projectName), version);
-        return tag.ToLower();
+        return tag.TrimStart(' ', '/').ToLower();
     }
 
     private void ConfigureDockerSettings(AutoToolSettings dockerSettings)
@@ -233,7 +230,7 @@ public class DockerImagesProcessor : ProcessorBase
             {
                 NoCache = true, // Don't use cache, always make sure to fetch the right images
                 File = dockerImageSpecificationFileName,
-                Platform = "linux",
+                //Platform = "linux",
                 Tag = new string[] { GetDockerImageTag(dockerImage, BuildContext.General.Version.NuGet) }
             };
 

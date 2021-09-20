@@ -7,8 +7,18 @@
 
 namespace Orc.FileAssociation
 {
+    using System.Threading.Tasks;
+
     public interface IFileAssociationService
     {
+        [ObsoleteEx(Message = "Not supported in Windows 10.",
+                    TreatAsErrorFromVersion = "4.2.0",
+                    RemoveInVersion = "5.0.0",
+                    ReplacementTypeOrMember = "AssociateFilesWithApplicationAsync(ApplicationInfo applicationInfo)")]
         void AssociateFilesWithApplication(string applicationName = null);
+
+        Task AssociateFilesWithApplicationAsync(ApplicationInfo applicationInfo);
+
+        Task UndoAssociationFilesWithApplicationAsync(ApplicationInfo applicationInfo);
     }
 }
