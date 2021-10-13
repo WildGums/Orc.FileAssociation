@@ -26,6 +26,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -50,6 +51,7 @@
                 <Button Grid.ColumnSpan="2" Content="Unregister application" Command="{Binding UnregisterApplication}" />
                 <Button Grid.ColumnSpan="2" Content="Associate extensions" Command="{Binding AssociateFiles}" />
                 <Button Grid.ColumnSpan="2" Content="Undo extensions associations" Command="{Binding UndoAssociationFiles}" />
+                <Button Grid.ColumnSpan="2" Content="Set extension handler via properties window" Command="{Binding OpenExtensionProperties}" />
 
             </orccontrols:StackGrid>
         </GroupBox>

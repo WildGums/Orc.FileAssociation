@@ -8,11 +8,13 @@
 namespace Orc.FileAssociation
 {
     using System;
+    using System.IO;
     using System.Runtime.InteropServices;
     using System.Threading.Tasks;
     using Catel;
     using Catel.Logging;
     using Microsoft.Win32;
+    using Orc.FileAssociation.Win32;
 
     public class FileAssociationService : IFileAssociationService
     {
@@ -101,6 +103,16 @@ namespace Orc.FileAssociation
                 Log.Debug($"Removed extension association for {finalExtension} from current user");
             }
 
+        }
+
+        public async Task OpenPropertiesWindowForExtensionAsync(string extension)
+        {
+            var appPath = AppDomain.CurrentDomain.BaseDirectory;
+            var fileName = $"Click on 'Change' to select default {extension} handler.{extension}";
+            var finalPath = Path.Combine(appPath, fileName);
+
+            File.Create(finalPath).Dispose();
+            Shell32.ShowFileProperties(finalPath);
         }
     }
 }

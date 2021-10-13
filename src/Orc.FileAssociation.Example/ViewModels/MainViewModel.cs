@@ -13,6 +13,7 @@ namespace Orc.FileAssociation.ViewModels
     using Catel.Data;
     using Catel.MVVM;
     using Catel.Reflection;
+    using Orc.FileAssociation.Win32;
 
     public class MainViewModel : ViewModelBase
     {
@@ -36,6 +37,7 @@ namespace Orc.FileAssociation.ViewModels
             UnregisterApplication = new Command(OnUnregisterApplicationExecute, OnUnregisterApplicationCanExecute);
             AssociateFiles = new TaskCommand(OnAssociateFilesExecuteAsync, OnAssociateFilesCanExecute);
             UndoAssociationFiles = new TaskCommand(OnUndoAssociateFilesExecuteAsync, OnAssociateFilesCanExecute);
+            OpenExtensionProperties = new TaskCommand(OnOpenExtensionPropertiesAsync);
             Title = "Orc.FileAssociation example";
         }
 
@@ -104,13 +106,23 @@ namespace Orc.FileAssociation.ViewModels
         {
             await _fileAssociationService.UndoAssociationFilesWithApplicationAsync(ApplicationInfo);
         }
+
+        public TaskCommand OpenExtensionProperties { get; private set; }
+
+        private async Task OnOpenExtensionPropertiesAsync()
+        {
+            foreach (var extension in FileAssociations.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                await _fileAssociationService.OpenPropertiesWindowForExtensionAsync(extension);
+            }
+        }
+
         #endregion
 
         #region Methods
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-
             UpdateState();
         }
 
