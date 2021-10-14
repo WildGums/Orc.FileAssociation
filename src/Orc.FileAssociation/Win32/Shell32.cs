@@ -3,10 +3,10 @@
     using System;
     using System.Runtime.InteropServices;
 
-    //Credits:
-    //https://pinvoke.net/default.aspx/shell32/ShellExecuteEx.html
+    // Credits:
+    // https://pinvoke.net/default.aspx/shell32/ShellExecuteEx.html
 
-    public static class Shell32
+    internal static class Shell32
     {
         [DllImport("shell32.dll", CharSet = CharSet.Auto)]
         internal static extern bool ShellExecuteEx(ref SHELLEXECUTEINFO lpExecInfo);

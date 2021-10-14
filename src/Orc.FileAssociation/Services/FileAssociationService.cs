@@ -15,6 +15,7 @@ namespace Orc.FileAssociation
     using Catel.Logging;
     using Microsoft.Win32;
     using Orc.FileAssociation.Win32;
+    using Orc.FileSystem;
 
     public class FileAssociationService : IFileAssociationService
     {
@@ -105,13 +106,13 @@ namespace Orc.FileAssociation
 
         }
 
-        public async Task OpenPropertiesWindowForExtensionAsync(string extension)
+        public async Task OpenPropertiesWindowForExtensionAsync(string extension, IFileService fileService)
         {
             var appPath = AppDomain.CurrentDomain.BaseDirectory;
             var fileName = $"Click on 'Change' to select default {extension} handler.{extension}";
             var finalPath = Path.Combine(appPath, fileName);
 
-            File.Create(finalPath).Dispose();
+            fileService.Create(finalPath);
             Shell32.ShowFileProperties(finalPath);
         }
     }

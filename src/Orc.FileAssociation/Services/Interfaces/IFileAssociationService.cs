@@ -8,6 +8,7 @@
 namespace Orc.FileAssociation
 {
     using System.Threading.Tasks;
+    using Orc.FileSystem;
 
     public interface IFileAssociationService
     {
@@ -21,6 +22,6 @@ namespace Orc.FileAssociation
 
         Task UndoAssociationFilesWithApplicationAsync(ApplicationInfo applicationInfo);
 
-        Task OpenPropertiesWindowForExtensionAsync(string extension);
+        Task OpenPropertiesWindowForExtensionAsync(string extension, IFileService fileService);
     }
 }

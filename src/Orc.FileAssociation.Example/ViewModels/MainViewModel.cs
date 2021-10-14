@@ -14,20 +14,23 @@ namespace Orc.FileAssociation.ViewModels
     using Catel.MVVM;
     using Catel.Reflection;
     using Orc.FileAssociation.Win32;
+    using Orc.FileSystem;
 
     public class MainViewModel : ViewModelBase
     {
         private readonly IApplicationRegistrationService _applicationRegistrationService;
         private readonly IFileAssociationService _fileAssociationService;
+        private readonly IFileService _fileService;
 
-        public MainViewModel(IApplicationRegistrationService applicationRegistrationService, IFileAssociationService fileAssociationService)
+        public MainViewModel(IApplicationRegistrationService applicationRegistrationService, IFileAssociationService fileAssociationService, IFileService fileService)
         {
             Argument.IsNotNull(() => applicationRegistrationService);
             Argument.IsNotNull(() => fileAssociationService);
+            Argument.IsNotNull(() => fileService);
 
             _applicationRegistrationService = applicationRegistrationService;
             _fileAssociationService = fileAssociationService;
-
+            _fileService = fileService;
             var entryAssembly = AssemblyHelper.GetEntryAssembly();
             Title = entryAssembly.Title();
             ApplicationInfo = new ApplicationInfo(entryAssembly);
@@ -113,7 +116,7 @@ namespace Orc.FileAssociation.ViewModels
         {
             foreach (var extension in FileAssociations.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries))
             {
-                await _fileAssociationService.OpenPropertiesWindowForExtensionAsync(extension);
+                await _fileAssociationService.OpenPropertiesWindowForExtensionAsync(extension, _fileService);
             }
         }
 
