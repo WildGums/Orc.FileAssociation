@@ -2,8 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Threading.Tasks;
+    using Catel.IoC;
     using NUnit.Framework;
+    using Orc.FileSystem;
 
     [TestFixture]
     public class FileAssociationsServiceFacts
@@ -12,13 +15,27 @@
         [TestCaseSource(nameof(Cases))]
         public async Task AssociateFilesWithApplicationAsyncTestAsync(ApplicationInfo applicationInfo, List<string> expectedClassesSubKey, string expectedSubKey, string expectedSubKeyValue, string expectedName)
         {
-            var fileAssociationServiceMock = new FileAssociationServiceMock();
+            var fileAssociationServiceMock = new FileAssociationServiceMock(FileService, DirectoryService);
             await fileAssociationServiceMock.AssociateFilesWithApplicationAsync(applicationInfo);
 
             CollectionAssert.AreEqual(expectedClassesSubKey, fileAssociationServiceMock.ClassesSubKey);
             Assert.AreEqual(expectedSubKey, fileAssociationServiceMock.SubKey);
             Assert.AreEqual(expectedSubKeyValue, fileAssociationServiceMock.SubKeyValue);
             Assert.AreEqual(expectedName, fileAssociationServiceMock.Name);
+        }
+
+        [Test]
+        [Explicit]
+        public async Task OpenPropertiesWindowForExtensionAsyncTestAsync()
+        {
+            var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\WildGums\\Temp\\";
+            var filePath = Path.Combine(path, "Click on 'Change' to select default csv handler.csv");
+            GetServices();
+            var fileAssociationServiceMock = new FileAssociationServiceMock(FileService, DirectoryService);
+            await fileAssociationServiceMock.OpenPropertiesWindowForExtensionAsync("csv", path);
+            Assert.IsTrue(File.Exists(filePath));
+            FileService.Delete(filePath);
+            DirectoryService.Delete(path);
         }
 
         private static ApplicationInfo CreateApplicationInfo(string location, List<string> extensions)
@@ -31,6 +48,17 @@
             applicationInfo.SupportedExtensions.AddRange(extensions);
             return applicationInfo;
         }
+
+        [OneTimeSetUp]
+        protected void GetServices()
+        {
+            var serviceLocator = ServiceLocator.Default;
+            FileService = serviceLocator.ResolveType<IFileService>();
+            DirectoryService = serviceLocator.ResolveType<IDirectoryService>();
+        }
+
+        public  IFileService FileService { get; private set; }
+        public  IDirectoryService DirectoryService { get; private set; }
 
         private static readonly object[] Cases =
         {
@@ -57,6 +85,10 @@
 
     internal class FileAssociationServiceMock : FileAssociationService
     {
+        public FileAssociationServiceMock(IFileService fileService, IDirectoryService directoryService) : base(fileService, directoryService)
+        {
+        }
+
         public List<string> ClassesSubKey { get; set; } = new();
 
         public string SubKey { get; set; }

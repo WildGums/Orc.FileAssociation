@@ -35,12 +35,14 @@ namespace Orc.FileAssociation
     }
     public class FileAssociationService : Orc.FileAssociation.IFileAssociationService
     {
-        public FileAssociationService() { }
+        public FileAssociationService(Orc.FileSystem.IFileService fileService, Orc.FileSystem.IDirectoryService directoryService) { }
         [System.Obsolete("Not supported in Windows 10. Use `AssociateFilesWithApplicationAsync(ApplicationI" +
             "nfo applicationInfo)` instead. Will be removed in version 5.0.0.", true)]
         public void AssociateFilesWithApplication(string applicationName = null) { }
         public System.Threading.Tasks.Task AssociateFilesWithApplicationAsync(Orc.FileAssociation.ApplicationInfo applicationInfo) { }
         protected virtual void CreateAssociationRegistryKey(string classesSubKey, string keySubKey, string subKeyValue, string name) { }
+        public virtual System.Threading.Tasks.Task OpenPropertiesWindowForExtensionAsync(string extension) { }
+        public virtual System.Threading.Tasks.Task OpenPropertiesWindowForExtensionAsync(string extension, string path) { }
         public System.Threading.Tasks.Task UndoAssociationFilesWithApplicationAsync(Orc.FileAssociation.ApplicationInfo applicationInfo) { }
         [System.Runtime.InteropServices.Guid("1968106d-f3b5-44cf-890e-116fcb9ecef1")]
         public class ApplicationAssociationRegistrationUI
@@ -70,6 +72,7 @@ namespace Orc.FileAssociation
             "nfo applicationInfo)` instead. Will be removed in version 5.0.0.", true)]
         void AssociateFilesWithApplication(string applicationName = null);
         System.Threading.Tasks.Task AssociateFilesWithApplicationAsync(Orc.FileAssociation.ApplicationInfo applicationInfo);
+        System.Threading.Tasks.Task OpenPropertiesWindowForExtensionAsync(string extension);
         System.Threading.Tasks.Task UndoAssociationFilesWithApplicationAsync(Orc.FileAssociation.ApplicationInfo applicationInfo);
     }
     public static class RegistryExtensions
