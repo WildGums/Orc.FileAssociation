@@ -22,6 +22,6 @@ namespace Orc.FileAssociation
 
         Task UndoAssociationFilesWithApplicationAsync(ApplicationInfo applicationInfo);
 
-        Task OpenPropertiesWindowForExtensionAsync(string extension, IFileService fileService);
+        Task OpenPropertiesWindowForExtensionAsync(string extension);
     }
 }

@@ -116,7 +116,7 @@ namespace Orc.FileAssociation.ViewModels
         {
             foreach (var extension in FileAssociations.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries))
             {
-                await _fileAssociationService.OpenPropertiesWindowForExtensionAsync(extension, _fileService);
+                await _fileAssociationService.OpenPropertiesWindowForExtensionAsync(extension);
             }
         }
 

@@ -19,7 +19,22 @@ namespace Orc.FileAssociation
 
     public class FileAssociationService : IFileAssociationService
     {
+
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+        private readonly IFileService _fileService;
+        private readonly IDirectoryService _directoryService;
+
+        public FileAssociationService()
+        {
+        }
+            public FileAssociationService(IFileService fileService, IDirectoryService directoryService)
+        {
+            Argument.IsNotNull(() => fileService);
+            Argument.IsNotNull(() => directoryService);
+            _fileService = fileService;
+            _directoryService = directoryService;
+        }
+
 
         [ObsoleteEx(Message = "Not supported in Windows 10.",
                   TreatAsErrorFromVersion = "4.2.0",
@@ -106,14 +121,22 @@ namespace Orc.FileAssociation
 
         }
 
-        public async Task OpenPropertiesWindowForExtensionAsync(string extension, IFileService fileService)
+        public virtual async Task OpenPropertiesWindowForExtensionAsync(string extension)
         {
             var appPath = AppDomain.CurrentDomain.BaseDirectory;
+            var resourcesPath = Path.Combine(appPath, "Resources\\");
             var fileName = $"Click on 'Change' to select default {extension} handler.{extension}";
-            var finalPath = Path.Combine(appPath, fileName);
-
-            fileService.Create(finalPath);
+            var finalPath = Path.Combine(resourcesPath, fileName);
+            _directoryService.Create(resourcesPath);
+            if (!_fileService.Exists(finalPath))
+            {
+                Log.Debug($"Creating a file with {extension} extension before showing its properties");
+                _fileService.Create(finalPath);
+                Log.Debug($"Created file with {extension} extension");
+            }
+            Log.Debug($"Opening properties window for {extension} extension");
             Shell32.ShowFileProperties(finalPath);
+            Log.Debug($"Opened properties window for {extension} extension");
         }
     }
 }
