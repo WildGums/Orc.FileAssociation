@@ -30,7 +30,7 @@
         public async Task OpenPropertiesWindowForExtensionAsyncTestAsync()
         {
             var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var finalPath = Path.Combine(appDataPath, "Wildgums", "Temp");
+            var finalPath = Path.Combine(appDataPath, "WildGums", "Temp");
             var filePath = Path.Combine(finalPath, "Click on 'Change' to select default csv handler.csv");
             var fileAssociationServiceMock = new FileAssociationServiceMock(FileService, DirectoryService, LanguageService);
 

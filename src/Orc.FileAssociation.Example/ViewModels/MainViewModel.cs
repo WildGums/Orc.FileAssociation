@@ -10,10 +10,8 @@ namespace Orc.FileAssociation.ViewModels
     using System;
     using System.Threading.Tasks;
     using Catel;
-    using Catel.Data;
     using Catel.MVVM;
     using Catel.Reflection;
-    using Orc.FileAssociation.Win32;
     using Orc.FileSystem;
 
     public class MainViewModel : ViewModelBase

@@ -118,6 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="OrcFileAssociation_FileAssociationService_FileName" xml:space="preserve">
-    <value>Click on 'Change' to select default {0} handler.{1}</value>
+    <value>Click on 'Change' to select default {0} handler.{0}</value>
+    <comment>{0} is for extension name, e.g. txt, csv</comment>
   </data>
 </root>

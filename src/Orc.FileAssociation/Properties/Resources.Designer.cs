@@ -61,7 +61,7 @@ namespace Orc.FileAssociation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Click on &apos;Change&apos; to select default {0} handler.{1}.
+        ///   Looks up a localized string similar to Click on &apos;Change&apos; to select default {0} handler.{0}.
         /// </summary>
         internal static string OrcFileAssociation_FileAssociationService_FileName {
             get {
