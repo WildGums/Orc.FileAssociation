@@ -31,6 +31,7 @@ namespace Orc.FileAssociation.ViewModels
             _applicationRegistrationService = applicationRegistrationService;
             _fileAssociationService = fileAssociationService;
             _fileService = fileService;
+
             var entryAssembly = AssemblyHelper.GetEntryAssembly();
             Title = entryAssembly.Title();
             ApplicationInfo = new ApplicationInfo(entryAssembly);
@@ -41,6 +42,7 @@ namespace Orc.FileAssociation.ViewModels
             AssociateFiles = new TaskCommand(OnAssociateFilesExecuteAsync, OnAssociateFilesCanExecute);
             UndoAssociationFiles = new TaskCommand(OnUndoAssociateFilesExecuteAsync, OnAssociateFilesCanExecute);
             OpenExtensionProperties = new TaskCommand(OnOpenExtensionPropertiesAsync);
+
             Title = "Orc.FileAssociation example";
         }
 

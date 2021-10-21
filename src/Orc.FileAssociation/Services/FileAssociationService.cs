@@ -13,23 +13,28 @@ namespace Orc.FileAssociation
     using System.Threading.Tasks;
     using Catel;
     using Catel.Logging;
+    using Catel.Services;
     using Microsoft.Win32;
     using Orc.FileAssociation.Win32;
     using Orc.FileSystem;
 
     public class FileAssociationService : IFileAssociationService
     {
-
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
         private readonly IFileService _fileService;
         private readonly IDirectoryService _directoryService;
+        private readonly ILanguageService _languageService;
 
-        public FileAssociationService(IFileService fileService, IDirectoryService directoryService)
+        public FileAssociationService(IFileService fileService, IDirectoryService directoryService, ILanguageService languageService)
         {
             Argument.IsNotNull(() => fileService);
             Argument.IsNotNull(() => directoryService);
+            Argument.IsNotNull(() => languageService);
+
             _fileService = fileService;
             _directoryService = directoryService;
+            _languageService = languageService;
         }
 
 
@@ -121,19 +126,17 @@ namespace Orc.FileAssociation
         public virtual async Task OpenPropertiesWindowForExtensionAsync(string extension)
         {
             var appPath = AppDomain.CurrentDomain.BaseDirectory;
-            var resourcesPath = Path.Combine(appPath, "Resources\\");
+            var resourcesPath = Path.Combine(appPath, "Resources");
             await OpenPropertiesWindowForExtensionAsync(extension, resourcesPath);
         }
 
         public virtual async Task OpenPropertiesWindowForExtensionAsync(string extension, string path)
         {
-            var fileName = $"Click on 'Change' to select default {extension} handler.{extension}";
+            var fileName = String.Format(_languageService.GetString("OrcFileAssociation_FileAssociationService_FileName"), extension, extension);
             var finalPath = Path.Combine(path, fileName);
-            Log.Debug($"Creating a Resources directory");
+
             _directoryService.Create(path);
-            Log.Debug($"Creating a file with {extension} extension before showing its properties");
             using (_fileService.Create(finalPath)) { }
-            Log.Debug($"Created file with {extension} extension");
             Log.Debug($"Opening properties window for {extension} extension");
             Shell32.ShowFileProperties(finalPath);
             Log.Debug($"Opened properties window for {extension} extension");

@@ -35,7 +35,7 @@ namespace Orc.FileAssociation
     }
     public class FileAssociationService : Orc.FileAssociation.IFileAssociationService
     {
-        public FileAssociationService(Orc.FileSystem.IFileService fileService, Orc.FileSystem.IDirectoryService directoryService) { }
+        public FileAssociationService(Orc.FileSystem.IFileService fileService, Orc.FileSystem.IDirectoryService directoryService, Catel.Services.ILanguageService languageService) { }
         [System.Obsolete("Not supported in Windows 10. Use `AssociateFilesWithApplicationAsync(ApplicationI" +
             "nfo applicationInfo)` instead. Will be removed in version 5.0.0.", true)]
         public void AssociateFilesWithApplication(string applicationName = null) { }
