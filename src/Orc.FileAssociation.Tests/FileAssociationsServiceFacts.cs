@@ -16,7 +16,7 @@
         [TestCaseSource(nameof(Cases))]
         public async Task AssociateFilesWithApplicationAsyncTestAsync(ApplicationInfo applicationInfo, List<string> expectedClassesSubKey, string expectedSubKey, string expectedSubKeyValue, string expectedName)
         {
-            var fileAssociationServiceMock = new FileAssociationServiceMock(FileService, DirectoryService, LanguageService);
+            var fileAssociationServiceMock = new FileAssociationServiceMock(_fileService, _directoryService, _languageService);
             await fileAssociationServiceMock.AssociateFilesWithApplicationAsync(applicationInfo);
 
             CollectionAssert.AreEqual(expectedClassesSubKey, fileAssociationServiceMock.ClassesSubKey);
@@ -32,13 +32,13 @@
             var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             var finalPath = Path.Combine(appDataPath, "WildGums", "Temp");
             var filePath = Path.Combine(finalPath, "Click on 'Change' to select default csv handler.csv");
-            var fileAssociationServiceMock = new FileAssociationServiceMock(FileService, DirectoryService, LanguageService);
+            var fileAssociationServiceMock = new FileAssociationServiceMock(_fileService, _directoryService, _languageService);
 
             await fileAssociationServiceMock.OpenPropertiesWindowForExtensionAsync("csv", finalPath);
 
             Assert.IsTrue(File.Exists(filePath));
 
-            DirectoryService.Delete(finalPath);
+            _directoryService.Delete(finalPath);
         }
 
         private static ApplicationInfo CreateApplicationInfo(string location, List<string> extensions)
@@ -56,14 +56,14 @@
         protected void GetServices()
         {
             var serviceLocator = ServiceLocator.Default;
-            FileService = serviceLocator.ResolveType<IFileService>();
-            DirectoryService = serviceLocator.ResolveType<IDirectoryService>();
-            LanguageService = serviceLocator.ResolveType<ILanguageService>();
+            _fileService = serviceLocator.ResolveType<IFileService>();
+            _directoryService = serviceLocator.ResolveType<IDirectoryService>();
+            _languageService = serviceLocator.ResolveType<ILanguageService>();
         }
 
-        private IFileService FileService { get; set; }
-        private IDirectoryService DirectoryService { get; set; }
-        private ILanguageService LanguageService { get; set; }
+        private IFileService _fileService;
+        private IDirectoryService _directoryService;
+        private ILanguageService _languageService;
 
         private static readonly object[] Cases =
         {
@@ -89,7 +89,6 @@
     }
 
     internal class FileAssociationServiceMock : FileAssociationService
-
     {
 
         public FileAssociationServiceMock(IFileService fileService, IDirectoryService directoryService, ILanguageService languageService)

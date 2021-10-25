@@ -132,7 +132,7 @@ namespace Orc.FileAssociation
 
         public virtual async Task OpenPropertiesWindowForExtensionAsync(string extension, string path)
         {
-            var fileName = String.Format(_languageService.GetString("OrcFileAssociation_FileAssociationService_FileName"), extension, extension);
+            var fileName = String.Format(_languageService.GetString("OrcFileAssociation_FileAssociationService_FileName"), extension);
             var finalPath = Path.Combine(path, fileName);
 
             _directoryService.Create(path);
