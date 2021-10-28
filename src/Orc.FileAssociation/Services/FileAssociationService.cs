@@ -8,15 +8,35 @@
 namespace Orc.FileAssociation
 {
     using System;
+    using System.IO;
     using System.Runtime.InteropServices;
     using System.Threading.Tasks;
     using Catel;
     using Catel.Logging;
+    using Catel.Services;
     using Microsoft.Win32;
+    using Orc.FileAssociation.Win32;
+    using Orc.FileSystem;
 
     public class FileAssociationService : IFileAssociationService
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
+        private readonly IFileService _fileService;
+        private readonly IDirectoryService _directoryService;
+        private readonly ILanguageService _languageService;
+
+        public FileAssociationService(IFileService fileService, IDirectoryService directoryService, ILanguageService languageService)
+        {
+            Argument.IsNotNull(() => fileService);
+            Argument.IsNotNull(() => directoryService);
+            Argument.IsNotNull(() => languageService);
+
+            _fileService = fileService;
+            _directoryService = directoryService;
+            _languageService = languageService;
+        }
+
 
         [ObsoleteEx(Message = "Not supported in Windows 10.",
                   TreatAsErrorFromVersion = "4.2.0",
@@ -101,6 +121,25 @@ namespace Orc.FileAssociation
                 Log.Debug($"Removed extension association for {finalExtension} from current user");
             }
 
+        }
+
+        public virtual async Task OpenPropertiesWindowForExtensionAsync(string extension)
+        {
+            var appPath = AppDomain.CurrentDomain.BaseDirectory;
+            var resourcesPath = Path.Combine(appPath, "Resources");
+            await OpenPropertiesWindowForExtensionAsync(extension, resourcesPath);
+        }
+
+        public virtual async Task OpenPropertiesWindowForExtensionAsync(string extension, string path)
+        {
+            var fileName = String.Format(_languageService.GetString("OrcFileAssociation_FileAssociationService_FileName"), extension);
+            var finalPath = Path.Combine(path, fileName);
+
+            _directoryService.Create(path);
+            using (_fileService.Create(finalPath)) { }
+            Log.Debug($"Opening properties window for {extension} extension");
+            Shell32.ShowFileProperties(finalPath);
+            Log.Debug($"Opened properties window for {extension} extension");
         }
     }
 }
