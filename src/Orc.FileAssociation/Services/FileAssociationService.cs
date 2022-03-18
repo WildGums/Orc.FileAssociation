@@ -85,6 +85,7 @@ namespace Orc.FileAssociation
             var name = string.Empty;
 
             Log.Info("Associating files with '{0}'", applicationName);
+
             foreach (var extension in applicationInfo.SupportedExtensions)
             {
                 var finalExtension = extension;
@@ -92,17 +93,23 @@ namespace Orc.FileAssociation
                 {
                     finalExtension = "." + finalExtension;
                 }
+
                 var classesSubKey = $"Software\\Classes\\{finalExtension}";
                 CreateAssociationRegistryKey(classesSubKey, subKey, subKeyValue, name);
             }
+
             Log.Info("Associated files with '{0}'", applicationName);
         }
 
         protected virtual void CreateAssociationRegistryKey(string classesSubKey, string keySubKey, string subKeyValue, string name)
         {
-            var key = Registry.CurrentUser.CreateSubKey(classesSubKey);
-            var subKey = key.CreateSubKey(keySubKey);
-            subKey.SetValue(name, subKeyValue);
+            using (var key = Registry.CurrentUser.CreateSubKey(classesSubKey))
+            {
+                using (var subKey = key.CreateSubKey(keySubKey))
+                {
+                    subKey.SetValue(name, subKeyValue);
+                }
+            }
         }
 
         public async Task UndoAssociationFilesWithApplicationAsync(ApplicationInfo applicationInfo)
@@ -116,11 +123,13 @@ namespace Orc.FileAssociation
                 {
                     finalExtension = "." + finalExtension;
                 }
+
                 Log.Debug($"Removing extension association {finalExtension} capabilities from current user");
+
                 Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree($"SOFTWARE\\Classes\\{finalExtension}");
+
                 Log.Debug($"Removed extension association for {finalExtension} from current user");
             }
-
         }
 
         public virtual async Task OpenPropertiesWindowForExtensionAsync(string extension)

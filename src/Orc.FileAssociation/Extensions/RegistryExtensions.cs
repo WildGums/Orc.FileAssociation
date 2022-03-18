@@ -33,13 +33,15 @@ namespace Orc.FileAssociation
         {
             using (var registry = RegistryKey.OpenBaseKey(registryHive, RegistryView.Default))
             {
-                var registryKey = registry.OpenSubKey(key);
-                if (registryKey is null)
+                using (var registryKey = registry.OpenSubKey(key))
                 {
-                    return false;
-                }
+                    if (registryKey is null)
+                    {
+                        return false;
+                    }
 
-                return true;
+                    return true;
+                }
             }
         }
 
@@ -47,15 +49,16 @@ namespace Orc.FileAssociation
         {
             using (var registry = RegistryKey.OpenBaseKey(registryHive, RegistryView.Default))
             {
-                var registryKey = registry.OpenSubKey(key);
-                if (registryKey is null)
+                using (var registryKey = registry.OpenSubKey(key))
                 {
-                    return false;
-                }
+                    if (registryKey is null)
+                    {
+                        return false;
+                    }
 
-                var valueExists = registryKey.GetValueNames().Any(x => string.Equals(valueName, x, StringComparison.OrdinalIgnoreCase));
-                registryKey.Dispose();
-                return valueExists;
+                    var valueExists = registryKey.GetValueNames().Any(x => string.Equals(valueName, x, StringComparison.OrdinalIgnoreCase));
+                    return valueExists;
+                }
             }
         }
 
