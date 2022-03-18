@@ -10,22 +10,25 @@ namespace Orc.FileAssociation.ViewModels
     using System;
     using System.Threading.Tasks;
     using Catel;
-    using Catel.Data;
     using Catel.MVVM;
     using Catel.Reflection;
+    using Orc.FileSystem;
 
     public class MainViewModel : ViewModelBase
     {
         private readonly IApplicationRegistrationService _applicationRegistrationService;
         private readonly IFileAssociationService _fileAssociationService;
+        private readonly IFileService _fileService;
 
-        public MainViewModel(IApplicationRegistrationService applicationRegistrationService, IFileAssociationService fileAssociationService)
+        public MainViewModel(IApplicationRegistrationService applicationRegistrationService, IFileAssociationService fileAssociationService, IFileService fileService)
         {
             Argument.IsNotNull(() => applicationRegistrationService);
             Argument.IsNotNull(() => fileAssociationService);
+            Argument.IsNotNull(() => fileService);
 
             _applicationRegistrationService = applicationRegistrationService;
             _fileAssociationService = fileAssociationService;
+            _fileService = fileService;
 
             var entryAssembly = AssemblyHelper.GetEntryAssembly();
             Title = entryAssembly.Title();
@@ -36,6 +39,8 @@ namespace Orc.FileAssociation.ViewModels
             UnregisterApplication = new Command(OnUnregisterApplicationExecute, OnUnregisterApplicationCanExecute);
             AssociateFiles = new TaskCommand(OnAssociateFilesExecuteAsync, OnAssociateFilesCanExecute);
             UndoAssociationFiles = new TaskCommand(OnUndoAssociateFilesExecuteAsync, OnAssociateFilesCanExecute);
+            OpenExtensionProperties = new TaskCommand(OnOpenExtensionPropertiesAsync);
+
             Title = "Orc.FileAssociation example";
         }
 
@@ -104,13 +109,23 @@ namespace Orc.FileAssociation.ViewModels
         {
             await _fileAssociationService.UndoAssociationFilesWithApplicationAsync(ApplicationInfo);
         }
+
+        public TaskCommand OpenExtensionProperties { get; private set; }
+
+        private async Task OnOpenExtensionPropertiesAsync()
+        {
+            foreach (var extension in FileAssociations.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                await _fileAssociationService.OpenPropertiesWindowForExtensionAsync(extension);
+            }
+        }
+
         #endregion
 
         #region Methods
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-
             UpdateState();
         }
 
