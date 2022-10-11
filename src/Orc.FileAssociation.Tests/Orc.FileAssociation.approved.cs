@@ -36,9 +36,6 @@ namespace Orc.FileAssociation
     public class FileAssociationService : Orc.FileAssociation.IFileAssociationService
     {
         public FileAssociationService(Orc.FileSystem.IFileService fileService, Orc.FileSystem.IDirectoryService directoryService, Catel.Services.ILanguageService languageService) { }
-        [System.Obsolete("Not supported in Windows 10. Use `AssociateFilesWithApplicationAsync(ApplicationI" +
-            "nfo applicationInfo)` instead. Will be removed in version 5.0.0.", true)]
-        public void AssociateFilesWithApplication(string applicationName = null) { }
         public System.Threading.Tasks.Task AssociateFilesWithApplicationAsync(Orc.FileAssociation.ApplicationInfo applicationInfo) { }
         protected virtual void CreateAssociationRegistryKey(string classesSubKey, string keySubKey, string subKeyValue, string name) { }
         public virtual System.Threading.Tasks.Task OpenPropertiesWindowForExtensionAsync(string extension) { }
@@ -68,9 +65,6 @@ namespace Orc.FileAssociation
     }
     public interface IFileAssociationService
     {
-        [System.Obsolete("Not supported in Windows 10. Use `AssociateFilesWithApplicationAsync(ApplicationI" +
-            "nfo applicationInfo)` instead. Will be removed in version 5.0.0.", true)]
-        void AssociateFilesWithApplication(string applicationName = null);
         System.Threading.Tasks.Task AssociateFilesWithApplicationAsync(Orc.FileAssociation.ApplicationInfo applicationInfo);
         System.Threading.Tasks.Task OpenPropertiesWindowForExtensionAsync(string extension);
         System.Threading.Tasks.Task UndoAssociationFilesWithApplicationAsync(Orc.FileAssociation.ApplicationInfo applicationInfo);

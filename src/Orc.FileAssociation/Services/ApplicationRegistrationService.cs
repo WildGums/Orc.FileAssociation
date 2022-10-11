@@ -1,13 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationRegistrationService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FileAssociation
+﻿namespace Orc.FileAssociation
 {
-    using Catel;
+    using System;
     using Catel.Logging;
     using Microsoft.Win32;
 
@@ -20,7 +13,7 @@ namespace Orc.FileAssociation
 
         public virtual bool IsApplicationRegistered(ApplicationInfo applicationInfo)
         {
-            Argument.IsNotNull(() => applicationInfo);
+            ArgumentNullException.ThrowIfNull(applicationInfo);
 
             Log.Debug("Checking if application '{0}' is registered", applicationInfo.Name);
 
@@ -49,7 +42,7 @@ namespace Orc.FileAssociation
 
         public virtual void RegisterApplication(ApplicationInfo applicationInfo)
         {
-            Argument.IsNotNull(() => applicationInfo);
+            ArgumentNullException.ThrowIfNull(applicationInfo);
 
             Log.Debug("Registering application '{0}'", applicationInfo.Name);
 
@@ -67,7 +60,7 @@ namespace Orc.FileAssociation
 
         public virtual void UnregisterApplication(ApplicationInfo applicationInfo)
         {
-            Argument.IsNotNull(() => applicationInfo);
+            ArgumentNullException.ThrowIfNull(applicationInfo);
 
             Log.Debug("Unregistering application '{0}'", applicationInfo.Name);
 
@@ -80,7 +73,7 @@ namespace Orc.FileAssociation
 
         protected virtual bool IsApplicationAddedToClassesRoot(ApplicationInfo applicationInfo)
         {
-            Argument.IsNotNull(() => applicationInfo);
+            ArgumentNullException.ThrowIfNull(applicationInfo);
 
             var registryHive = RegistryHive.CurrentUser;
 
@@ -91,7 +84,7 @@ namespace Orc.FileAssociation
 
         protected virtual void AddApplicationToClassesRoot(ApplicationInfo applicationInfo)
         {
-            Argument.IsNotNull(() => applicationInfo);
+            ArgumentNullException.ThrowIfNull(applicationInfo);
 
             Log.Debug("Adding application '{0}' to classes root", applicationInfo.Name);
 
@@ -116,7 +109,7 @@ namespace Orc.FileAssociation
 
         protected virtual void RemoveApplicationFromClassesRoot(ApplicationInfo applicationInfo)
         {
-            Argument.IsNotNull(() => applicationInfo);
+            ArgumentNullException.ThrowIfNull(applicationInfo);
 
             Log.Debug("Removing application '{0}' from classes root", applicationInfo.Name);
 
@@ -128,7 +121,7 @@ namespace Orc.FileAssociation
 
         protected virtual bool IsFileAssociationCapabilitiesAdded(ApplicationInfo applicationInfo)
         {
-            Argument.IsNotNull(() => applicationInfo);
+            ArgumentNullException.ThrowIfNull(applicationInfo);
 
             var registryHive = RegistryHive.CurrentUser;
 
@@ -139,7 +132,7 @@ namespace Orc.FileAssociation
 
         protected virtual void AddFileAssociationCapabilities(ApplicationInfo applicationInfo)
         {
-            Argument.IsNotNull(() => applicationInfo);
+            ArgumentNullException.ThrowIfNull(applicationInfo);
 
             Log.Debug("Adding file association capabilities '{0}' to current user", applicationInfo.Name);
 
@@ -170,7 +163,7 @@ namespace Orc.FileAssociation
 
         protected virtual void RemoveFileAssociationCapabilities(ApplicationInfo applicationInfo)
         {
-            Argument.IsNotNull(() => applicationInfo);
+            ArgumentNullException.ThrowIfNull(applicationInfo);
 
             Log.Debug("Removing file association capabilities '{0}' from current user", applicationInfo.Name);
 
@@ -183,7 +176,7 @@ namespace Orc.FileAssociation
 
         protected virtual bool IsAppAddedToRegisteredApps(ApplicationInfo applicationInfo)
         {
-            Argument.IsNotNull(() => applicationInfo);
+            ArgumentNullException.ThrowIfNull(applicationInfo);
 
             var registryHive = RegistryHive.CurrentUser;
 
@@ -193,7 +186,7 @@ namespace Orc.FileAssociation
 
         protected virtual void AddAppToRegisteredApps(ApplicationInfo applicationInfo)
         {
-            Argument.IsNotNull(() => applicationInfo);
+            ArgumentNullException.ThrowIfNull(applicationInfo);
 
             Log.Debug("Adding app {0}' to registered apps", applicationInfo.Name);
 
@@ -207,7 +200,7 @@ namespace Orc.FileAssociation
 
         protected virtual void RemoveAppFromRegisteredApps(ApplicationInfo applicationInfo)
         {
-            Argument.IsNotNull(() => applicationInfo);
+            ArgumentNullException.ThrowIfNull(applicationInfo);
 
             Log.Debug("Removing app {0}' from registered apps", applicationInfo.Name);
 
@@ -218,7 +211,7 @@ namespace Orc.FileAssociation
 
         protected virtual string GetCurrentUserSoftwareKeyName(ApplicationInfo applicationInfo)
         {
-            Argument.IsNotNull(() => applicationInfo);
+            ArgumentNullException.ThrowIfNull(applicationInfo);
 
             return string.Format("Software\\{0}\\{1}", applicationInfo.Company, applicationInfo.Name);
         }

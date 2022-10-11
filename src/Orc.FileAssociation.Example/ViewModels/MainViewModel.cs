@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MainViewModel.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FileAssociation.ViewModels
+﻿namespace Orc.FileAssociation.ViewModels
 {
     using System;
     using System.Threading.Tasks;
@@ -22,9 +15,9 @@ namespace Orc.FileAssociation.ViewModels
 
         public MainViewModel(IApplicationRegistrationService applicationRegistrationService, IFileAssociationService fileAssociationService, IFileService fileService)
         {
-            Argument.IsNotNull(() => applicationRegistrationService);
-            Argument.IsNotNull(() => fileAssociationService);
-            Argument.IsNotNull(() => fileService);
+            ArgumentNullException.ThrowIfNull(applicationRegistrationService);
+            ArgumentNullException.ThrowIfNull(fileAssociationService);
+            ArgumentNullException.ThrowIfNull(fileService);
 
             _applicationRegistrationService = applicationRegistrationService;
             _fileAssociationService = fileAssociationService;
@@ -44,7 +37,6 @@ namespace Orc.FileAssociation.ViewModels
             Title = "Orc.FileAssociation example";
         }
 
-        #region Properties
         public override string Title { get; protected set; }
 
         public ApplicationInfo ApplicationInfo { get; protected set; }
@@ -52,9 +44,7 @@ namespace Orc.FileAssociation.ViewModels
         public string FileAssociations { get; set; }
 
         public bool IsApplicationRegistered { get; private set; }
-        #endregion
 
-        #region Commands
         public Command RegisterApplication { get; private set; }
 
         private bool OnRegisterApplicationCanExecute()
@@ -120,9 +110,6 @@ namespace Orc.FileAssociation.ViewModels
             }
         }
 
-        #endregion
-
-        #region Methods
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
@@ -133,6 +120,5 @@ namespace Orc.FileAssociation.ViewModels
         {
             IsApplicationRegistered = _applicationRegistrationService.IsApplicationRegistered(ApplicationInfo);
         }
-        #endregion
     }
 }

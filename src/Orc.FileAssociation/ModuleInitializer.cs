@@ -17,7 +17,7 @@ public static class ModuleInitializer
         serviceLocator.RegisterType<IApplicationRegistrationService, ApplicationRegistrationService>();
         serviceLocator.RegisterType<IFileAssociationService, FileAssociationService>();
 
-        var languageService = serviceLocator.ResolveType<ILanguageService>();
+        var languageService = serviceLocator.ResolveRequiredType<ILanguageService>();
         languageService.RegisterLanguageSource(new LanguageResourceSource("Orc.FileAssociation", "Orc.FileAssociation.Properties", "Resources"));
     }
 }

@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RegistryExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FileAssociation
+﻿namespace Orc.FileAssociation
 {
     using System;
     using System.Linq;
@@ -18,22 +11,26 @@ namespace Orc.FileAssociation
 
         public static void SetRegistryValue(this RegistryHive registryHive, string key, string valueName, string value)
         {
+            ArgumentNullException.ThrowIfNull(registryHive);
+
             Log.Debug("Setting registry value '{0}\\{1}' => '{2}' = '{3}'", registryHive, key, valueName, value);
 
             using (var registry = RegistryKey.OpenBaseKey(registryHive, RegistryView.Default))
             {
-                using (var registryKey = registry.CreateSubKey(key))
+                using (var registryKey = registry?.CreateSubKey(key))
                 {
-                    registryKey.SetValue(valueName, value);
+                    registryKey?.SetValue(valueName, value);
                 }
             }
         }
 
         public static bool IsRegistryKeyAvailable(this RegistryHive registryHive, string key)
         {
+            ArgumentNullException.ThrowIfNull(registryHive);
+
             using (var registry = RegistryKey.OpenBaseKey(registryHive, RegistryView.Default))
             {
-                using (var registryKey = registry.OpenSubKey(key))
+                using (var registryKey = registry?.OpenSubKey(key))
                 {
                     if (registryKey is null)
                     {
@@ -47,9 +44,11 @@ namespace Orc.FileAssociation
 
         public static bool IsRegisteryValueAvailable(this RegistryHive registryHive, string key, string valueName)
         {
+            ArgumentNullException.ThrowIfNull(registryHive);
+
             using (var registry = RegistryKey.OpenBaseKey(registryHive, RegistryView.Default))
             {
-                using (var registryKey = registry.OpenSubKey(key))
+                using (var registryKey = registry?.OpenSubKey(key))
                 {
                     if (registryKey is null)
                     {
@@ -64,6 +63,8 @@ namespace Orc.FileAssociation
 
         public static void RemoveRegistryKey(this RegistryHive registryHive, string key)
         {
+            ArgumentNullException.ThrowIfNull(registryHive);
+
             Log.Debug("Removing registry key '{0}\\{1}'", registryHive, key);
 
             using (var registry = RegistryKey.OpenBaseKey(registryHive, RegistryView.Default))
@@ -74,13 +75,15 @@ namespace Orc.FileAssociation
 
         public static void RemoveRegistryValue(this RegistryHive registryHive, string key, string valueName)
         {
+            ArgumentNullException.ThrowIfNull(registryHive);
+
             Log.Debug("Removing registry key value '{0}\\{1}' => '{2}'", registryHive, key, valueName);
 
             using (var registry = RegistryKey.OpenBaseKey(registryHive, RegistryView.Default))
             {
-                using (var registryKey = registry.CreateSubKey(key))
+                using (var registryKey = registry?.CreateSubKey(key))
                 {
-                    registryKey.DeleteValue(valueName);
+                    registryKey?.DeleteValue(valueName);
                 }
             }
         }

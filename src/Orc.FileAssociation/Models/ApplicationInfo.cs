@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationInfo.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FileAssociation
+﻿namespace Orc.FileAssociation
 {
     using System.Collections.Generic;
     using System.Reflection;
@@ -16,7 +9,7 @@ namespace Orc.FileAssociation
     public class ApplicationInfo
     {
         private string _location;
-        #region Constructors
+
         public ApplicationInfo(string company, string name, string title, string location)
         {
             Argument.IsNotNullOrWhitespace(() => company);
@@ -27,17 +20,21 @@ namespace Orc.FileAssociation
             Company = company;
             Name = name;
             Title = title;
-            Location = location;
+            _location = location;
             SupportedExtensions = new List<string>();
         }
 
         public ApplicationInfo(Assembly assembly)
-            : this(assembly.Company(), assembly.GetName().Name, assembly.Title(), assembly.Location)
         {
-        }
-        #endregion
+            ArgumentNullException.ThrowIfNull(assembly);
 
-        #region Properties
+            Company = assembly.Company() ?? string.Empty;
+            Name = assembly.GetName().Name ?? string.Empty;
+            Title = assembly.Title() ?? string.Empty;
+            _location = assembly.Location;
+            SupportedExtensions = new List<string>();
+        }
+
         public string Company { get; private set; }
 
         public string Name { get; private set; }
@@ -53,12 +50,12 @@ namespace Orc.FileAssociation
                     // Note: we need to make sure this is an executable, otherwise the file association won't work
                     return _location.Replace("dll", "exe", StringComparison.OrdinalIgnoreCase);
                 }
+
                 return _location;
             }
             private set => _location = value;
         }
 
         public List<string> SupportedExtensions { get; private set; }
-        #endregion
     }
 }

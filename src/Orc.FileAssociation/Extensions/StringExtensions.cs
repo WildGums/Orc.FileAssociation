@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StringExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FileAssociation
+﻿namespace Orc.FileAssociation
 {
     using Catel.Reflection;
 
@@ -15,8 +8,8 @@ namespace Orc.FileAssociation
         {
             if (string.IsNullOrWhiteSpace(applicationName))
             {
-                var entryAssembly = AssemblyHelper.GetEntryAssembly();
-                applicationName = entryAssembly.GetName().Name;
+                var entryAssembly = AssemblyHelper.GetRequiredEntryAssembly();
+                applicationName = entryAssembly.GetName().Name ?? string.Empty;
             }
 
             return applicationName;
