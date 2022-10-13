@@ -11,6 +11,20 @@
         public SHELLEXECUTEINFO()
         {
             cbSize = Marshal.SizeOf(DefaultInstance);
+            fMask = default;
+            hwnd = default;
+            lpVerb = default;
+            lpFile = default;
+            lpParameters = default;
+            lpDirectory = default;
+            nShow = default;
+            hInstApp = default;
+            lpIDList = default;
+            lpClass = default;
+            hkeyClass = default;
+            dwHotKey = default;
+            hIcon = default;
+            hProcess = default;
         }
 
         public int cbSize;
