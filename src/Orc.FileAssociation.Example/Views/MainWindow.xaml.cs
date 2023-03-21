@@ -1,18 +1,19 @@
-﻿namespace Orc.FileAssociation.Views
+﻿namespace Orc.FileAssociation.Views;
+
+using Catel.Logging;
+using Orchestra.Logging;
+
+public partial class MainWindow 
 {
-    using Catel.Logging;
-    using Orchestra.Logging;
-
-    public partial class MainWindow 
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            var logListener = new TextBoxLogListener(logTextBox);
-            logListener.IgnoreCatelLogging = true;
-            
-            LogManager.AddListener(logListener);
-        }
+        var logListener = new TextBoxLogListener(logTextBox)
+        {
+            IgnoreCatelLogging = true
+        };
+
+        LogManager.AddListener(logListener);
     }
 }

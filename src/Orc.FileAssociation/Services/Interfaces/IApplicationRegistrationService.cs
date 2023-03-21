@@ -1,9 +1,8 @@
-﻿namespace Orc.FileAssociation
+﻿namespace Orc.FileAssociation;
+
+public interface IApplicationRegistrationService
 {
-    public interface IApplicationRegistrationService
-    {
-        bool IsApplicationRegistered(ApplicationInfo applicationInfo);
-        void RegisterApplication(ApplicationInfo applicationInfo);
-        void UnregisterApplication(ApplicationInfo applicationInfo);
-    }
+    bool IsApplicationRegistered(ApplicationInfo applicationInfo);
+    void RegisterApplication(ApplicationInfo applicationInfo);
+    void UnregisterApplication(ApplicationInfo applicationInfo);
 }
