@@ -23,10 +23,10 @@ public class FileAssociationsServiceFacts
         var fileAssociationServiceMock = new FileAssociationServiceMock(_fileService, _directoryService, _languageService);
         await fileAssociationServiceMock.AssociateFilesWithApplicationAsync(applicationInfo);
 
-        CollectionAssert.AreEqual(expectedClassesSubKey, fileAssociationServiceMock.ClassesSubKey);
-        Assert.AreEqual(expectedSubKey, fileAssociationServiceMock.SubKey);
-        Assert.AreEqual(expectedSubKeyValue, fileAssociationServiceMock.SubKeyValue);
-        Assert.AreEqual(expectedName, fileAssociationServiceMock.Name);
+        Assert.That(fileAssociationServiceMock.ClassesSubKey, Is.EqualTo(expectedClassesSubKey).AsCollection);
+        Assert.That(fileAssociationServiceMock.SubKey, Is.EqualTo(expectedSubKey));
+        Assert.That(fileAssociationServiceMock.SubKeyValue, Is.EqualTo(expectedSubKeyValue));
+        Assert.That(fileAssociationServiceMock.Name, Is.EqualTo(expectedName));
     }
 
     [Test]
@@ -40,7 +40,7 @@ public class FileAssociationsServiceFacts
 
         await fileAssociationServiceMock.OpenPropertiesWindowForExtensionAsync("csv", finalPath);
 
-        Assert.IsTrue(File.Exists(filePath));
+        Assert.That(File.Exists(filePath), Is.True);
 
         _directoryService.Delete(finalPath);
     }
