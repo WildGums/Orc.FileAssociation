@@ -1,154 +1,118 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FileAssociationService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FileAssociation;
 
+using System;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Catel.Logging;
+using Catel.Services;
+using Microsoft.Win32;
+using Win32;
+using FileSystem;
 
-namespace Orc.FileAssociation
+public class FileAssociationService : IFileAssociationService
 {
-    using System;
-    using System.IO;
-    using System.Runtime.InteropServices;
-    using System.Threading.Tasks;
-    using Catel;
-    using Catel.Logging;
-    using Catel.Services;
-    using Microsoft.Win32;
-    using Orc.FileAssociation.Win32;
-    using Orc.FileSystem;
+    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-    public class FileAssociationService : IFileAssociationService
+    private readonly IFileService _fileService;
+    private readonly IDirectoryService _directoryService;
+    private readonly ILanguageService _languageService;
+
+    public FileAssociationService(IFileService fileService, IDirectoryService directoryService, ILanguageService languageService)
     {
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+        ArgumentNullException.ThrowIfNull(fileService);
+        ArgumentNullException.ThrowIfNull(directoryService);
+        ArgumentNullException.ThrowIfNull(languageService);
 
-        private readonly IFileService _fileService;
-        private readonly IDirectoryService _directoryService;
-        private readonly ILanguageService _languageService;
+        _fileService = fileService;
+        _directoryService = directoryService;
+        _languageService = languageService;
+    }
 
-        public FileAssociationService(IFileService fileService, IDirectoryService directoryService, ILanguageService languageService)
+    [Guid("1f76a169-f994-40ac-8fc8-0959e8874710")]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IApplicationAssociationRegistrationUI
+    {
+        [PreserveSig]
+        int LaunchAdvancedAssociationUI([MarshalAs(UnmanagedType.LPWStr)] string pszAppRegName);
+    }
+
+    [ComImport]
+    [Guid("1968106d-f3b5-44cf-890e-116fcb9ecef1")]
+    public class ApplicationAssociationRegistrationUI
+    {
+    }
+
+    public async Task AssociateFilesWithApplicationAsync(ApplicationInfo applicationInfo)
+    {
+        ArgumentNullException.ThrowIfNull( applicationInfo);
+
+        var applicationName = applicationInfo.Name.GetApplicationName();
+        var appPath = applicationInfo.Location;
+        const string subKey = "shell\\open\\command";
+        var subKeyValue = $"{appPath} \"%1\"";
+        var name = string.Empty;
+
+        Log.Info("Associating files with '{0}'", applicationName);
+
+        foreach (var extension in applicationInfo.SupportedExtensions)
         {
-            Argument.IsNotNull(() => fileService);
-            Argument.IsNotNull(() => directoryService);
-            Argument.IsNotNull(() => languageService);
-
-            _fileService = fileService;
-            _directoryService = directoryService;
-            _languageService = languageService;
-        }
-
-
-        [ObsoleteEx(Message = "Not supported in Windows 10.",
-                  TreatAsErrorFromVersion = "4.2.0",
-                  RemoveInVersion = "5.0.0",
-                  ReplacementTypeOrMember = "AssociateFilesWithApplicationAsync(ApplicationInfo applicationInfo)")]
-        public void AssociateFilesWithApplication(string applicationName = null)
-        {
-            applicationName = applicationName.GetApplicationName();
-
-            Log.Info("Associating files with '{0}'", applicationName);
-
-            var applicationAssociationRegistrationUi = (IApplicationAssociationRegistrationUI)new ApplicationAssociationRegistrationUI();
-            var hr = applicationAssociationRegistrationUi.LaunchAdvancedAssociationUI(applicationName);
-            var exception = Marshal.GetExceptionForHR(hr);
-            if (exception is not null)
+            var finalExtension = extension;
+            if (!finalExtension.StartsWith("."))
             {
-                Log.Error(exception, "Failed to associate the files with application '{0}'", applicationName);
-                throw exception;
+                finalExtension = "." + finalExtension;
             }
 
-            Log.Info("Associated files with '{0}'", applicationName);
+            var classesSubKey = $"Software\\Classes\\{finalExtension}";
+            CreateAssociationRegistryKey(classesSubKey, subKey, subKeyValue, name);
         }
 
-        [Guid("1f76a169-f994-40ac-8fc8-0959e8874710")]
-        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        public interface IApplicationAssociationRegistrationUI
+        Log.Info("Associated files with '{0}'", applicationName);
+    }
+
+    protected virtual void CreateAssociationRegistryKey(string classesSubKey, string keySubKey, string subKeyValue, string name)
+    {
+        using var key = Registry.CurrentUser.CreateSubKey(classesSubKey);
+        using var subKey = key.CreateSubKey(keySubKey);
+        subKey.SetValue(name, subKeyValue);
+    }
+
+    public async Task UndoAssociationFilesWithApplicationAsync(ApplicationInfo applicationInfo)
+    {
+        ArgumentNullException.ThrowIfNull(applicationInfo);
+
+        foreach (var extension in applicationInfo.SupportedExtensions)
         {
-            [PreserveSig]
-            int LaunchAdvancedAssociationUI([MarshalAs(UnmanagedType.LPWStr)] string pszAppRegName);
-        }
-
-        [ComImport]
-        [Guid("1968106d-f3b5-44cf-890e-116fcb9ecef1")]
-        public class ApplicationAssociationRegistrationUI
-        {
-        }
-
-        public async Task AssociateFilesWithApplicationAsync(ApplicationInfo applicationInfo)
-        {
-            Argument.IsNotNull(() =>  applicationInfo);
-
-            var applicationName = applicationInfo.Name.GetApplicationName();
-            var appPath = applicationInfo.Location;
-            var subKey = "shell\\open\\command";
-            var subKeyValue = $"{appPath} \"%1\"";
-            var name = string.Empty;
-
-            Log.Info("Associating files with '{0}'", applicationName);
-
-            foreach (var extension in applicationInfo.SupportedExtensions)
+            var finalExtension = extension;
+            if (!finalExtension.StartsWith("."))
             {
-                var finalExtension = extension;
-                if (!finalExtension.StartsWith("."))
-                {
-                    finalExtension = "." + finalExtension;
-                }
-
-                var classesSubKey = $"Software\\Classes\\{finalExtension}";
-                CreateAssociationRegistryKey(classesSubKey, subKey, subKeyValue, name);
+                finalExtension = "." + finalExtension;
             }
 
-            Log.Info("Associated files with '{0}'", applicationName);
+            Log.Debug($"Removing extension association {finalExtension} capabilities from current user");
+
+            Registry.CurrentUser.DeleteSubKeyTree($"SOFTWARE\\Classes\\{finalExtension}");
+
+            Log.Debug($"Removed extension association for {finalExtension} from current user");
         }
+    }
 
-        protected virtual void CreateAssociationRegistryKey(string classesSubKey, string keySubKey, string subKeyValue, string name)
-        {
-            using (var key = Registry.CurrentUser.CreateSubKey(classesSubKey))
-            {
-                using (var subKey = key.CreateSubKey(keySubKey))
-                {
-                    subKey.SetValue(name, subKeyValue);
-                }
-            }
-        }
+    public virtual async Task OpenPropertiesWindowForExtensionAsync(string extension)
+    {
+        var appPath = AppDomain.CurrentDomain.BaseDirectory;
+        var resourcesPath = Path.Combine(appPath, "Resources");
+        await OpenPropertiesWindowForExtensionAsync(extension, resourcesPath);
+    }
 
-        public async Task UndoAssociationFilesWithApplicationAsync(ApplicationInfo applicationInfo)
-        {
-            Argument.IsNotNull(() => applicationInfo);
+    public virtual async Task OpenPropertiesWindowForExtensionAsync(string extension, string path)
+    {
+        var fileName = string.Format(_languageService.GetRequiredString("OrcFileAssociation_FileAssociationService_FileName"), extension);
+        var finalPath = Path.Combine(path, fileName);
 
-            foreach (var extension in applicationInfo.SupportedExtensions)
-            {
-                var finalExtension = extension;
-                if (!finalExtension.StartsWith("."))
-                {
-                    finalExtension = "." + finalExtension;
-                }
-
-                Log.Debug($"Removing extension association {finalExtension} capabilities from current user");
-
-                Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree($"SOFTWARE\\Classes\\{finalExtension}");
-
-                Log.Debug($"Removed extension association for {finalExtension} from current user");
-            }
-        }
-
-        public virtual async Task OpenPropertiesWindowForExtensionAsync(string extension)
-        {
-            var appPath = AppDomain.CurrentDomain.BaseDirectory;
-            var resourcesPath = Path.Combine(appPath, "Resources");
-            await OpenPropertiesWindowForExtensionAsync(extension, resourcesPath);
-        }
-
-        public virtual async Task OpenPropertiesWindowForExtensionAsync(string extension, string path)
-        {
-            var fileName = String.Format(_languageService.GetString("OrcFileAssociation_FileAssociationService_FileName"), extension);
-            var finalPath = Path.Combine(path, fileName);
-
-            _directoryService.Create(path);
-            using (_fileService.Create(finalPath)) { }
-            Log.Debug($"Opening properties window for {extension} extension");
-            Shell32.ShowFileProperties(finalPath);
-            Log.Debug($"Opened properties window for {extension} extension");
-        }
+        _directoryService.Create(path);
+        await using (_fileService.Create(finalPath)) { }
+        Log.Debug($"Opening properties window for {extension} extension");
+        Shell32.ShowFileProperties(finalPath);
+        Log.Debug($"Opened properties window for {extension} extension");
     }
 }

@@ -1,64 +1,50 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationInfo.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FileAssociation;
 
+using System.Collections.Generic;
+using System.Reflection;
+using System;
+using Catel;
+using Catel.Reflection;
 
-namespace Orc.FileAssociation
+public class ApplicationInfo
 {
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System;
-    using Catel;
-    using Catel.Reflection;
+    private string _location;
 
-    public class ApplicationInfo
+    public ApplicationInfo(string company, string name, string title, string location)
     {
-        private string _location;
-        #region Constructors
-        public ApplicationInfo(string company, string name, string title, string location)
-        {
-            Argument.IsNotNullOrWhitespace(() => company);
-            Argument.IsNotNullOrWhitespace(() => name);
-            Argument.IsNotNullOrWhitespace(() => title);
-            Argument.IsNotNullOrWhitespace(() => location);
+        Argument.IsNotNullOrWhitespace(() => company);
+        Argument.IsNotNullOrWhitespace(() => name);
+        Argument.IsNotNullOrWhitespace(() => title);
+        Argument.IsNotNullOrWhitespace(() => location);
 
-            Company = company;
-            Name = name;
-            Title = title;
-            Location = location;
-            SupportedExtensions = new List<string>();
-        }
-
-        public ApplicationInfo(Assembly assembly)
-            : this(assembly.Company(), assembly.GetName().Name, assembly.Title(), assembly.Location)
-        {
-        }
-        #endregion
-
-        #region Properties
-        public string Company { get; private set; }
-
-        public string Name { get; private set; }
-
-        public string Title { get; private set; }
-
-        public string Location
-        {
-            get
-            {
-                if (_location.EndsWith("dll"))
-                {
-                    // Note: we need to make sure this is an executable, otherwise the file association won't work
-                    return _location.Replace("dll", "exe", StringComparison.OrdinalIgnoreCase);
-                }
-                return _location;
-            }
-            private set => _location = value;
-        }
-
-        public List<string> SupportedExtensions { get; private set; }
-        #endregion
+        Company = company;
+        Name = name;
+        Title = title;
+        _location = location;
+        SupportedExtensions = new List<string>();
     }
+
+    public ApplicationInfo(Assembly assembly)
+    {
+        ArgumentNullException.ThrowIfNull(assembly);
+
+        Company = assembly.Company() ?? string.Empty;
+        Name = assembly.GetName().Name ?? string.Empty;
+        Title = assembly.Title() ?? string.Empty;
+        _location = assembly.Location;
+        SupportedExtensions = new List<string>();
+    }
+
+    public string Company { get; }
+
+    public string Name { get; }
+
+    public string Title { get; }
+
+    public string Location =>
+        _location.EndsWith("dll") ?
+            // Note: we need to make sure this is an executable, otherwise the file association won't work
+            _location.Replace("dll", "exe", StringComparison.OrdinalIgnoreCase) : _location;
+
+    public List<string> SupportedExtensions { get; }
 }

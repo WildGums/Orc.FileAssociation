@@ -4,15 +4,19 @@
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:catel="http://schemas.catelproject.com"
-              xmlns:orccontrols="http://schemas.wildgums.com/orc/controls"
+              xmlns:orccontrols="http://schemas.wildgums.com/orc/controls" 
+              xmlns:orctheming="http://schemas.wildgums.com/orc/theming"
               mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400">
 
     <orccontrols:StackGrid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <orctheming:ThemeSwitcherView />
 
         <GroupBox Header="Application">
             <orccontrols:StackGrid>

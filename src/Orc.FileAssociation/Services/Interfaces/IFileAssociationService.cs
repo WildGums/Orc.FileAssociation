@@ -1,27 +1,12 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IFileAssociationService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FileAssociation;
 
+using System.Threading.Tasks;
 
-namespace Orc.FileAssociation
+public interface IFileAssociationService
 {
-    using System.Threading.Tasks;
-    using Orc.FileSystem;
+    Task AssociateFilesWithApplicationAsync(ApplicationInfo applicationInfo);
 
-    public interface IFileAssociationService
-    {
-        [ObsoleteEx(Message = "Not supported in Windows 10.",
-                    TreatAsErrorFromVersion = "4.2.0",
-                    RemoveInVersion = "5.0.0",
-                    ReplacementTypeOrMember = "AssociateFilesWithApplicationAsync(ApplicationInfo applicationInfo)")]
-        void AssociateFilesWithApplication(string applicationName = null);
+    Task UndoAssociationFilesWithApplicationAsync(ApplicationInfo applicationInfo);
 
-        Task AssociateFilesWithApplicationAsync(ApplicationInfo applicationInfo);
-
-        Task UndoAssociationFilesWithApplicationAsync(ApplicationInfo applicationInfo);
-
-        Task OpenPropertiesWindowForExtensionAsync(string extension);
-    }
+    Task OpenPropertiesWindowForExtensionAsync(string extension);
 }
