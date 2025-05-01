@@ -180,7 +180,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
 
         const RegistryHive registryHive = RegistryHive.CurrentUser;
 
-        var keyExists = registryHive.IsRegisteryValueAvailable(RegisteredApplicationRegistryKeyName, applicationInfo.Name);
+        var keyExists = registryHive.IsRegistryValueAvailable(RegisteredApplicationRegistryKeyName, applicationInfo.Name);
         return keyExists;
     }
 
