@@ -71,8 +71,8 @@ namespace Orc.FileAssociation
     }
     public static class RegistryExtensions
     {
-        public static bool IsRegisteryValueAvailable(this Microsoft.Win32.RegistryHive registryHive, string key, string valueName) { }
         public static bool IsRegistryKeyAvailable(this Microsoft.Win32.RegistryHive registryHive, string key) { }
+        public static bool IsRegistryValueAvailable(this Microsoft.Win32.RegistryHive registryHive, string key, string valueName) { }
         public static void RemoveRegistryKey(this Microsoft.Win32.RegistryHive registryHive, string key) { }
         public static void RemoveRegistryValue(this Microsoft.Win32.RegistryHive registryHive, string key, string valueName) { }
         public static void SetRegistryValue(this Microsoft.Win32.RegistryHive registryHive, string key, string valueName, string value) { }
