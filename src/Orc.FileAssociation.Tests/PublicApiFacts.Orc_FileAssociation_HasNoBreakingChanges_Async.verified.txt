@@ -1,7 +1,8 @@
 ﻿[assembly: System.Resources.NeutralResourcesLanguage("en-US")]
-[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v8.0", FrameworkDisplayName=".NET 8.0")]
+[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v10.0", FrameworkDisplayName=".NET 10.0")]
 public static class ModuleInitializer
 {
+    [System.Runtime.CompilerServices.ModuleInitializer]
     public static void Initialize() { }
 }
 namespace Orc.FileAssociation
@@ -71,8 +72,8 @@ namespace Orc.FileAssociation
     }
     public static class RegistryExtensions
     {
-        public static bool IsRegisteryValueAvailable(this Microsoft.Win32.RegistryHive registryHive, string key, string valueName) { }
         public static bool IsRegistryKeyAvailable(this Microsoft.Win32.RegistryHive registryHive, string key) { }
+        public static bool IsRegistryValueAvailable(this Microsoft.Win32.RegistryHive registryHive, string key, string valueName) { }
         public static void RemoveRegistryKey(this Microsoft.Win32.RegistryHive registryHive, string key) { }
         public static void RemoveRegistryValue(this Microsoft.Win32.RegistryHive registryHive, string key, string valueName) { }
         public static void SetRegistryValue(this Microsoft.Win32.RegistryHive registryHive, string key, string valueName, string value) { }
