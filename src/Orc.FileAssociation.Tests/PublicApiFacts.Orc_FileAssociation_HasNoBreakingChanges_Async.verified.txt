@@ -70,6 +70,10 @@ namespace Orc.FileAssociation
         System.Threading.Tasks.Task OpenPropertiesWindowForExtensionAsync(string extension);
         System.Threading.Tasks.Task UndoAssociationFilesWithApplicationAsync(Orc.FileAssociation.ApplicationInfo applicationInfo);
     }
+    public static class OrcFileAssociationModule
+    {
+        public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddOrcFileAssociation(this Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection) { }
+    }
     public static class RegistryExtensions
     {
         public static bool IsRegistryKeyAvailable(this Microsoft.Win32.RegistryHive registryHive, string key) { }

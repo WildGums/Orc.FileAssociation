@@ -2,6 +2,7 @@
 
 using System;
 using Catel.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 
 public class ApplicationRegistrationService : IApplicationRegistrationService
@@ -9,33 +10,33 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     private const string ClassesRegistryKeyName = "Software\\Classes";
     private const string RegisteredApplicationRegistryKeyName = "Software\\RegisteredApplications";
 
-    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+    private static readonly ILogger Logger = LogManager.GetLogger(typeof(ApplicationRegistrationService));
 
     public virtual bool IsApplicationRegistered(ApplicationInfo applicationInfo)
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Log.Debug("Checking if application '{0}' is registered", applicationInfo.Name);
+        Logger.LogDebug("Checking if application '{0}' is registered", applicationInfo.Name);
 
         if (!IsApplicationAddedToClassesRoot(applicationInfo))
         {
-            Log.Debug("Application not added to classes root");
+            Logger.LogDebug("Application not added to classes root");
             return false;
         }
 
         if (!IsFileAssociationCapabilitiesAdded(applicationInfo))
         {
-            Log.Debug("Application not added to file association capabilities");
+            Logger.LogDebug("Application not added to file association capabilities");
             return false;
         }
 
         if (!IsAppAddedToRegisteredApps(applicationInfo))
         {
-            Log.Debug("Application not added to registered apps");
+            Logger.LogDebug("Application not added to registered apps");
             return false;
         }
 
-        Log.Debug("Application '{0}' is registered", applicationInfo.Name);
+        Logger.LogDebug("Application '{0}' is registered", applicationInfo.Name);
 
         return true;
     }
@@ -44,7 +45,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Log.Debug("Registering application '{0}'", applicationInfo.Name);
+        Logger.LogDebug("Registering application '{0}'", applicationInfo.Name);
 
         // Step 1: Create app in the classes root
         AddApplicationToClassesRoot(applicationInfo);
@@ -55,20 +56,20 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
         // Step 3: Add registered app
         AddAppToRegisteredApps(applicationInfo);
 
-        Log.Debug("Registered application '{0}'", applicationInfo.Name);
+        Logger.LogDebug("Registered application '{0}'", applicationInfo.Name);
     }
 
     public virtual void UnregisterApplication(ApplicationInfo applicationInfo)
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Log.Debug("Unregistering application '{0}'", applicationInfo.Name);
+        Logger.LogDebug("Unregistering application '{0}'", applicationInfo.Name);
 
         RemoveApplicationFromClassesRoot(applicationInfo);
         RemoveFileAssociationCapabilities(applicationInfo);
         RemoveAppFromRegisteredApps(applicationInfo);
 
-        Log.Debug("Unregistered application '{0}'", applicationInfo.Name);
+        Logger.LogDebug("Unregistered application '{0}'", applicationInfo.Name);
     }
 
     protected virtual bool IsApplicationAddedToClassesRoot(ApplicationInfo applicationInfo)
@@ -86,7 +87,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Log.Debug("Adding application '{0}' to classes root", applicationInfo.Name);
+        Logger.LogDebug("Adding application '{0}' to classes root", applicationInfo.Name);
 
         const RegistryHive registryHive = RegistryHive.CurrentUser;
 
@@ -111,7 +112,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Log.Debug("Removing application '{0}' from classes root", applicationInfo.Name);
+        Logger.LogDebug("Removing application '{0}' from classes root", applicationInfo.Name);
 
         const RegistryHive registryHive = RegistryHive.CurrentUser;
 
@@ -134,7 +135,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Log.Debug("Adding file association capabilities '{0}' to current user", applicationInfo.Name);
+        Logger.LogDebug("Adding file association capabilities '{0}' to current user", applicationInfo.Name);
 
         const RegistryHive registryHive = RegistryHive.CurrentUser;
 
@@ -155,7 +156,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
                 finalExtension = "." + finalExtension;
             }
 
-            Log.Debug("Adding file association capability for extension '{0}'", finalExtension);
+            Logger.LogDebug("Adding file association capability for extension '{0}'", finalExtension);
 
             registryHive.SetRegistryValue($"{softwareKey}\\Capabilities\\FileAssociations", finalExtension, applicationInfo.Name);
         }
@@ -165,7 +166,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Log.Debug("Removing file association capabilities '{0}' from current user", applicationInfo.Name);
+        Logger.LogDebug("Removing file association capabilities '{0}' from current user", applicationInfo.Name);
 
         var registryHive = RegistryHive.CurrentUser;
 
@@ -188,7 +189,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Log.Debug("Adding app {0}' to registered apps", applicationInfo.Name);
+        Logger.LogDebug("Adding app {0}' to registered apps", applicationInfo.Name);
 
         const RegistryHive registryHive = RegistryHive.CurrentUser;
 
@@ -202,7 +203,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Log.Debug("Removing app {0}' from registered apps", applicationInfo.Name);
+        Logger.LogDebug("Removing app {0}' from registered apps", applicationInfo.Name);
 
         const RegistryHive registryHive = RegistryHive.CurrentUser;
 
