@@ -12,12 +12,10 @@ public class MainViewModel : ViewModelBase
     private readonly IFileAssociationService _fileAssociationService;
     private readonly IFileService _fileService;
 
-    public MainViewModel(IApplicationRegistrationService applicationRegistrationService, IFileAssociationService fileAssociationService, IFileService fileService)
+    public MainViewModel(IServiceProvider serviceProvider, IApplicationRegistrationService applicationRegistrationService, 
+        IFileAssociationService fileAssociationService, IFileService fileService)
+        : base(serviceProvider)
     {
-        ArgumentNullException.ThrowIfNull(applicationRegistrationService);
-        ArgumentNullException.ThrowIfNull(fileAssociationService);
-        ArgumentNullException.ThrowIfNull(fileService);
-
         _applicationRegistrationService = applicationRegistrationService;
         _fileAssociationService = fileAssociationService;
         _fileService = fileService;
@@ -27,11 +25,11 @@ public class MainViewModel : ViewModelBase
         ApplicationInfo = new ApplicationInfo(entryAssembly);
         FileAssociations = "abc;xyz;txt";
 
-        RegisterApplication = new Command(OnRegisterApplicationExecute, OnRegisterApplicationCanExecute);
-        UnregisterApplication = new Command(OnUnregisterApplicationExecute, OnUnregisterApplicationCanExecute);
-        AssociateFiles = new TaskCommand(OnAssociateFilesExecuteAsync, OnAssociateFilesCanExecute);
-        UndoAssociationFiles = new TaskCommand(OnUndoAssociateFilesExecuteAsync, OnAssociateFilesCanExecute);
-        OpenExtensionProperties = new TaskCommand(OnOpenExtensionPropertiesAsync);
+        RegisterApplication = new Command(serviceProvider, OnRegisterApplicationExecute, OnRegisterApplicationCanExecute);
+        UnregisterApplication = new Command(serviceProvider, OnUnregisterApplicationExecute, OnUnregisterApplicationCanExecute);
+        AssociateFiles = new TaskCommand(serviceProvider, OnAssociateFilesExecuteAsync, OnAssociateFilesCanExecute);
+        UndoAssociationFiles = new TaskCommand(serviceProvider, OnUndoAssociateFilesExecuteAsync, OnAssociateFilesCanExecute);
+        OpenExtensionProperties = new TaskCommand(serviceProvider, OnOpenExtensionPropertiesAsync);
 
         Title = "Orc.FileAssociation example";
     }
