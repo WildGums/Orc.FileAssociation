@@ -6,13 +6,14 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Catel.Logging;
 using Catel.Services;
+using FileSystem;
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using Win32;
-using FileSystem;
 
 public class FileAssociationService : IFileAssociationService
 {
-    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+    private static readonly ILogger Logger = LogManager.GetLogger(typeof(FileAssociationService));
 
     private readonly IFileService _fileService;
     private readonly IDirectoryService _directoryService;
@@ -20,10 +21,6 @@ public class FileAssociationService : IFileAssociationService
 
     public FileAssociationService(IFileService fileService, IDirectoryService directoryService, ILanguageService languageService)
     {
-        ArgumentNullException.ThrowIfNull(fileService);
-        ArgumentNullException.ThrowIfNull(directoryService);
-        ArgumentNullException.ThrowIfNull(languageService);
-
         _fileService = fileService;
         _directoryService = directoryService;
         _languageService = languageService;
@@ -53,7 +50,7 @@ public class FileAssociationService : IFileAssociationService
         var subKeyValue = $"{appPath} \"%1\"";
         var name = string.Empty;
 
-        Log.Info("Associating files with '{0}'", applicationName);
+        Logger.LogInformation("Associating files with '{0}'", applicationName);
 
         foreach (var extension in applicationInfo.SupportedExtensions)
         {
@@ -67,7 +64,7 @@ public class FileAssociationService : IFileAssociationService
             CreateAssociationRegistryKey(classesSubKey, subKey, subKeyValue, name);
         }
 
-        Log.Info("Associated files with '{0}'", applicationName);
+        Logger.LogInformation("Associated files with '{0}'", applicationName);
     }
 
     protected virtual void CreateAssociationRegistryKey(string classesSubKey, string keySubKey, string subKeyValue, string name)
@@ -89,11 +86,11 @@ public class FileAssociationService : IFileAssociationService
                 finalExtension = "." + finalExtension;
             }
 
-            Log.Debug($"Removing extension association {finalExtension} capabilities from current user");
+            Logger.LogDebug($"Removing extension association {finalExtension} capabilities from current user");
 
             Registry.CurrentUser.DeleteSubKeyTree($"SOFTWARE\\Classes\\{finalExtension}");
 
-            Log.Debug($"Removed extension association for {finalExtension} from current user");
+            Logger.LogDebug($"Removed extension association for {finalExtension} from current user");
         }
     }
 
@@ -111,8 +108,8 @@ public class FileAssociationService : IFileAssociationService
 
         _directoryService.Create(path);
         await using (_fileService.Create(finalPath)) { }
-        Log.Debug($"Opening properties window for {extension} extension");
+        Logger.LogDebug($"Opening properties window for {extension} extension");
         Shell32.ShowFileProperties(finalPath);
-        Log.Debug($"Opened properties window for {extension} extension");
+        Logger.LogDebug($"Opened properties window for {extension} extension");
     }
 }

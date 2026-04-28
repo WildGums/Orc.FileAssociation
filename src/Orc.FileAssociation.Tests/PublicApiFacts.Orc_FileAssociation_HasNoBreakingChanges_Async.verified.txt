@@ -83,3 +83,10 @@ namespace Orc.FileAssociation
         public static string GetApplicationName(this string applicationName) { }
     }
 }
+namespace Orc
+{
+    public static class OrcFileAssociationModule
+    {
+        public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddOrcFileAssociation(this Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection) { }
+    }
+}

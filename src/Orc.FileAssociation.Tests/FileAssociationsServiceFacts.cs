@@ -8,19 +8,20 @@ using Catel.IoC;
 using Catel.Services;
 using NUnit.Framework;
 using FileSystem;
+using Microsoft.Extensions.DependencyInjection;
 
 [TestFixture]
 public class FileAssociationsServiceFacts
 {
-    private IFileService _fileService;
-    private IDirectoryService _directoryService;
-    private ILanguageService _languageService;
-
     [Test]
     [TestCaseSource(nameof(Cases))]
     public async Task AssociateFilesWithApplicationAsyncTestAsync(ApplicationInfo applicationInfo, List<string> expectedClassesSubKey, string expectedSubKey, string expectedSubKeyValue, string expectedName)
     {
-        var fileAssociationServiceMock = new FileAssociationServiceMock(_fileService, _directoryService, _languageService);
+        var serviceCollection = ServiceCollectionHelper.CreateServiceCollection();
+
+        using var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        var fileAssociationServiceMock = ActivatorUtilities.CreateInstance< FileAssociationServiceMock>(serviceProvider);
         await fileAssociationServiceMock.AssociateFilesWithApplicationAsync(applicationInfo);
 
         Assert.That(fileAssociationServiceMock.ClassesSubKey, Is.EqualTo(expectedClassesSubKey).AsCollection);
@@ -36,13 +37,19 @@ public class FileAssociationsServiceFacts
         var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         var finalPath = Path.Combine(appDataPath, "WildGums", "Temp");
         var filePath = Path.Combine(finalPath, "Click on 'Change' to select default csv handler.csv");
-        var fileAssociationServiceMock = new FileAssociationServiceMock(_fileService, _directoryService, _languageService);
+
+        var serviceCollection = ServiceCollectionHelper.CreateServiceCollection();
+
+        using var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        var fileAssociationServiceMock = ActivatorUtilities.CreateInstance<FileAssociationServiceMock>(serviceProvider);
 
         await fileAssociationServiceMock.OpenPropertiesWindowForExtensionAsync("csv", finalPath);
 
         Assert.That(File.Exists(filePath), Is.True);
 
-        _directoryService.Delete(finalPath);
+        var directoryService = serviceProvider.GetRequiredService<IDirectoryService>();
+        directoryService.Delete(finalPath);
     }
 
     private static ApplicationInfo CreateApplicationInfo(string location, List<string> extensions)
@@ -56,15 +63,6 @@ public class FileAssociationsServiceFacts
         return applicationInfo;
     }
 
-    [OneTimeSetUp]
-    protected void GetServices()
-    {
-        var serviceLocator = ServiceLocator.Default;
-        _fileService = serviceLocator.ResolveType<IFileService>();
-        _directoryService = serviceLocator.ResolveType<IDirectoryService>();
-        _languageService = serviceLocator.ResolveType<ILanguageService>();
-    }
-        
     private static readonly object[] Cases =
     {
         new object[] {CreateApplicationInfo(@"C:\Source\Orc.FileAssociation\output\Debug\Orc.FileAssociation.Example\netcoreapp3.1\Orc.FileAssociation.Example.exe", new List<string> { "txt", "abc", "xyz" }),

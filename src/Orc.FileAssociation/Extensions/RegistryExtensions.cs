@@ -3,15 +3,16 @@
 using System;
 using System.Linq;
 using Catel.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 
 public static class RegistryExtensions
 {
-    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+    private static readonly ILogger Logger = LogManager.GetLogger(typeof(RegistryExtensions));
 
     public static void SetRegistryValue(this RegistryHive registryHive, string key, string valueName, string value)
     {
-        Log.Debug("Setting registry value '{0}\\{1}' => '{2}' = '{3}'", registryHive, key, valueName, value);
+        Logger.LogDebug("Setting registry value '{0}\\{1}' => '{2}' = '{3}'", registryHive, key, valueName, value);
 
         using var registry = RegistryKey.OpenBaseKey(registryHive, RegistryView.Default);
         using var registryKey = registry.CreateSubKey(key);
@@ -40,7 +41,7 @@ public static class RegistryExtensions
 
     public static void RemoveRegistryKey(this RegistryHive registryHive, string key)
     {
-        Log.Debug("Removing registry key '{0}\\{1}'", registryHive, key);
+        Logger.LogDebug("Removing registry key '{0}\\{1}'", registryHive, key);
 
         using var registry = RegistryKey.OpenBaseKey(registryHive, RegistryView.Default);
         registry.DeleteSubKeyTree(key);
@@ -48,7 +49,7 @@ public static class RegistryExtensions
 
     public static void RemoveRegistryValue(this RegistryHive registryHive, string key, string valueName)
     {
-        Log.Debug("Removing registry key value '{0}\\{1}' => '{2}'", registryHive, key, valueName);
+        Logger.LogDebug("Removing registry key value '{0}\\{1}' => '{2}'", registryHive, key, valueName);
 
         using var registry = RegistryKey.OpenBaseKey(registryHive, RegistryView.Default);
         using var registryKey = registry?.CreateSubKey(key);
