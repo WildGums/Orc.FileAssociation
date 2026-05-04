@@ -50,7 +50,7 @@ public class FileAssociationService : IFileAssociationService
         var subKeyValue = $"{appPath} \"%1\"";
         var name = string.Empty;
 
-        Logger.LogInformation("Associating files with '{0}'", applicationName);
+        Logger.LogInformation("Associating files with '{ApplicationName}'", applicationName);
 
         foreach (var extension in applicationInfo.SupportedExtensions)
         {
@@ -64,7 +64,7 @@ public class FileAssociationService : IFileAssociationService
             CreateAssociationRegistryKey(classesSubKey, subKey, subKeyValue, name);
         }
 
-        Logger.LogInformation("Associated files with '{0}'", applicationName);
+        Logger.LogInformation("Associated files with '{ApplicationName}'", applicationName);
     }
 
     protected virtual void CreateAssociationRegistryKey(string classesSubKey, string keySubKey, string subKeyValue, string name)
@@ -86,11 +86,11 @@ public class FileAssociationService : IFileAssociationService
                 finalExtension = "." + finalExtension;
             }
 
-            Logger.LogDebug($"Removing extension association {finalExtension} capabilities from current user");
+            Logger.LogDebug("Removing extension association {Extension} capabilities from current user", finalExtension);
 
             Registry.CurrentUser.DeleteSubKeyTree($"SOFTWARE\\Classes\\{finalExtension}");
 
-            Logger.LogDebug($"Removed extension association for {finalExtension} from current user");
+            Logger.LogDebug("Removed extension association for {Extension} from current user", finalExtension);
         }
     }
 
@@ -108,8 +108,8 @@ public class FileAssociationService : IFileAssociationService
 
         _directoryService.Create(path);
         await using (_fileService.Create(finalPath)) { }
-        Logger.LogDebug($"Opening properties window for {extension} extension");
+        Logger.LogDebug("Opening properties window for {Extension} extension", extension);
         Shell32.ShowFileProperties(finalPath);
-        Logger.LogDebug($"Opened properties window for {extension} extension");
+        Logger.LogDebug("Opened properties window for {Extension} extension", extension);
     }
 }
