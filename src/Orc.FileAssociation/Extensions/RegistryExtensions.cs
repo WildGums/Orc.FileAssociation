@@ -12,7 +12,7 @@ public static class RegistryExtensions
 
     public static void SetRegistryValue(this RegistryHive registryHive, string key, string valueName, string value)
     {
-        Logger.LogDebug("Setting registry value '{0}\\{1}' => '{2}' = '{3}'", registryHive, key, valueName, value);
+        Logger.LogDebug("Setting registry value '{RegistryHive}\\{Key}' => '{ValueName}' = '{Value}'", registryHive, key, valueName, value);
 
         using var registry = RegistryKey.OpenBaseKey(registryHive, RegistryView.Default);
         using var registryKey = registry.CreateSubKey(key);
@@ -41,7 +41,7 @@ public static class RegistryExtensions
 
     public static void RemoveRegistryKey(this RegistryHive registryHive, string key)
     {
-        Logger.LogDebug("Removing registry key '{0}\\{1}'", registryHive, key);
+        Logger.LogDebug("Removing registry key '{RegistryHive}\\{Key}'", registryHive, key);
 
         using var registry = RegistryKey.OpenBaseKey(registryHive, RegistryView.Default);
         registry.DeleteSubKeyTree(key);
@@ -49,7 +49,7 @@ public static class RegistryExtensions
 
     public static void RemoveRegistryValue(this RegistryHive registryHive, string key, string valueName)
     {
-        Logger.LogDebug("Removing registry key value '{0}\\{1}' => '{2}'", registryHive, key, valueName);
+        Logger.LogDebug("Removing registry key value '{RegistryHive}\\{Key}' => '{ValueName}'", registryHive, key, valueName);
 
         using var registry = RegistryKey.OpenBaseKey(registryHive, RegistryView.Default);
         using var registryKey = registry?.CreateSubKey(key);

@@ -16,7 +16,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Logger.LogDebug("Checking if application '{0}' is registered", applicationInfo.Name);
+        Logger.LogDebug("Checking if application '{ApplicationName}' is registered", applicationInfo.Name);
 
         if (!IsApplicationAddedToClassesRoot(applicationInfo))
         {
@@ -36,7 +36,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
             return false;
         }
 
-        Logger.LogDebug("Application '{0}' is registered", applicationInfo.Name);
+        Logger.LogDebug("Application '{ApplicationName}' is registered", applicationInfo.Name);
 
         return true;
     }
@@ -45,7 +45,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Logger.LogDebug("Registering application '{0}'", applicationInfo.Name);
+        Logger.LogDebug("Registering application '{ApplicationName}'", applicationInfo.Name);
 
         // Step 1: Create app in the classes root
         AddApplicationToClassesRoot(applicationInfo);
@@ -56,20 +56,20 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
         // Step 3: Add registered app
         AddAppToRegisteredApps(applicationInfo);
 
-        Logger.LogDebug("Registered application '{0}'", applicationInfo.Name);
+        Logger.LogDebug("Registered application '{ApplicationName}'", applicationInfo.Name);
     }
 
     public virtual void UnregisterApplication(ApplicationInfo applicationInfo)
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Logger.LogDebug("Unregistering application '{0}'", applicationInfo.Name);
+        Logger.LogDebug("Unregistering application '{ApplicationName}'", applicationInfo.Name);
 
         RemoveApplicationFromClassesRoot(applicationInfo);
         RemoveFileAssociationCapabilities(applicationInfo);
         RemoveAppFromRegisteredApps(applicationInfo);
 
-        Logger.LogDebug("Unregistered application '{0}'", applicationInfo.Name);
+        Logger.LogDebug("Unregistered application '{ApplicationName}'", applicationInfo.Name);
     }
 
     protected virtual bool IsApplicationAddedToClassesRoot(ApplicationInfo applicationInfo)
@@ -87,7 +87,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Logger.LogDebug("Adding application '{0}' to classes root", applicationInfo.Name);
+        Logger.LogDebug("Adding application '{ApplicationName}' to classes root", applicationInfo.Name);
 
         const RegistryHive registryHive = RegistryHive.CurrentUser;
 
@@ -112,7 +112,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Logger.LogDebug("Removing application '{0}' from classes root", applicationInfo.Name);
+        Logger.LogDebug("Removing application '{ApplicationName}' from classes root", applicationInfo.Name);
 
         const RegistryHive registryHive = RegistryHive.CurrentUser;
 
@@ -135,7 +135,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Logger.LogDebug("Adding file association capabilities '{0}' to current user", applicationInfo.Name);
+        Logger.LogDebug("Adding file association capabilities '{ApplicationName}' to current user", applicationInfo.Name);
 
         const RegistryHive registryHive = RegistryHive.CurrentUser;
 
@@ -156,7 +156,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
                 finalExtension = "." + finalExtension;
             }
 
-            Logger.LogDebug("Adding file association capability for extension '{0}'", finalExtension);
+            Logger.LogDebug("Adding file association capability for extension '{Extension}'", finalExtension);
 
             registryHive.SetRegistryValue($"{softwareKey}\\Capabilities\\FileAssociations", finalExtension, applicationInfo.Name);
         }
@@ -166,7 +166,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Logger.LogDebug("Removing file association capabilities '{0}' from current user", applicationInfo.Name);
+        Logger.LogDebug("Removing file association capabilities '{ApplicationName}' from current user", applicationInfo.Name);
 
         var registryHive = RegistryHive.CurrentUser;
 
@@ -189,7 +189,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Logger.LogDebug("Adding app {0}' to registered apps", applicationInfo.Name);
+        Logger.LogDebug("Adding app '{ApplicationName}' to registered apps", applicationInfo.Name);
 
         const RegistryHive registryHive = RegistryHive.CurrentUser;
 
@@ -203,7 +203,7 @@ public class ApplicationRegistrationService : IApplicationRegistrationService
     {
         ArgumentNullException.ThrowIfNull(applicationInfo);
 
-        Logger.LogDebug("Removing app {0}' from registered apps", applicationInfo.Name);
+        Logger.LogDebug("Removing app '{ApplicationName}' from registered apps", applicationInfo.Name);
 
         const RegistryHive registryHive = RegistryHive.CurrentUser;
 
